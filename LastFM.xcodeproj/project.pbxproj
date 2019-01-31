@@ -9,10 +9,14 @@
 /* Begin PBXBuildFile section */
 		4AE4A881FC8217BAD9D7F5B5 /* Pods_LastFM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4298AB968D1CD80B76D4123E /* Pods_LastFM.framework */; };
 		DDA634A922034C430044823B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA634A822034C430044823B /* AppDelegate.swift */; };
-		DDA634AB22034C430044823B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA634AA22034C430044823B /* ViewController.swift */; };
 		DDA634AE22034C430044823B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDA634AC22034C430044823B /* Main.storyboard */; };
 		DDA634B022034C430044823B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDA634AF22034C430044823B /* Assets.xcassets */; };
 		DDA634B322034C440044823B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDA634B122034C430044823B /* LaunchScreen.storyboard */; };
+		DDA634C7220351E70044823B /* MainCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA634C6220351E70044823B /* MainCollectionViewController.swift */; };
+		DDA634CC22035F500044823B /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA634CB22035F500044823B /* Coordinator.swift */; };
+		DDA634CE22035F5F0044823B /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA634CD22035F5F0044823B /* AppCoordinator.swift */; };
+		DDA634D0220360320044823B /* MainCollectionViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA634CF220360320044823B /* MainCollectionViewCoordinator.swift */; };
+		DDA634D2220362410044823B /* MainCollectionViewInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA634D1220362410044823B /* MainCollectionViewInteractor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,11 +24,15 @@
 		4298AB968D1CD80B76D4123E /* Pods_LastFM.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LastFM.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDA634A522034C430044823B /* LastFM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LastFM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDA634A822034C430044823B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		DDA634AA22034C430044823B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DDA634AD22034C430044823B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DDA634AF22034C430044823B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DDA634B222034C440044823B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DDA634B422034C440044823B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DDA634C6220351E70044823B /* MainCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewController.swift; sourceTree = "<group>"; };
+		DDA634CB22035F500044823B /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		DDA634CD22035F5F0044823B /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		DDA634CF220360320044823B /* MainCollectionViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewCoordinator.swift; sourceTree = "<group>"; };
+		DDA634D1220362410044823B /* MainCollectionViewInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewInteractor.swift; sourceTree = "<group>"; };
 		E7CFAA99128BAFAA8F340095 /* Pods-LastFM.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LastFM.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LastFM/Pods-LastFM.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -80,6 +88,7 @@
 			children = (
 				DDA634A822034C430044823B /* AppDelegate.swift */,
 				DDA634BB22034D600044823B /* Info */,
+				DDA634C2220350F60044823B /* Coordinators */,
 				DDA634BE22034D8E0044823B /* Storyboards */,
 				DDA634BD22034D860044823B /* ViewControllers */,
 			);
@@ -106,7 +115,7 @@
 		DDA634BD22034D860044823B /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				DDA634AA22034C430044823B /* ViewController.swift */,
+				DDA634C5220351B50044823B /* MainCollectionViewController */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -118,6 +127,25 @@
 				DDA634B122034C430044823B /* LaunchScreen.storyboard */,
 			);
 			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		DDA634C2220350F60044823B /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				DDA634CB22035F500044823B /* Coordinator.swift */,
+				DDA634CD22035F5F0044823B /* AppCoordinator.swift */,
+				DDA634CF220360320044823B /* MainCollectionViewCoordinator.swift */,
+			);
+			path = Coordinators;
+			sourceTree = "<group>";
+		};
+		DDA634C5220351B50044823B /* MainCollectionViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DDA634C6220351E70044823B /* MainCollectionViewController.swift */,
+				DDA634D1220362410044823B /* MainCollectionViewInteractor.swift */,
+			);
+			path = MainCollectionViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -236,8 +264,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DDA634AB22034C430044823B /* ViewController.swift in Sources */,
+				DDA634CE22035F5F0044823B /* AppCoordinator.swift in Sources */,
+				DDA634D0220360320044823B /* MainCollectionViewCoordinator.swift in Sources */,
+				DDA634C7220351E70044823B /* MainCollectionViewController.swift in Sources */,
 				DDA634A922034C430044823B /* AppDelegate.swift in Sources */,
+				DDA634D2220362410044823B /* MainCollectionViewInteractor.swift in Sources */,
+				DDA634CC22035F500044823B /* Coordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

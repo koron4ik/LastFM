@@ -17,6 +17,9 @@
 		DDA634CE22035F5F0044823B /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA634CD22035F5F0044823B /* AppCoordinator.swift */; };
 		DDA634D0220360320044823B /* MainCollectionViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA634CF220360320044823B /* MainCollectionViewCoordinator.swift */; };
 		DDA634D2220362410044823B /* MainCollectionViewInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA634D1220362410044823B /* MainCollectionViewInteractor.swift */; };
+		DDA634D5220369F90044823B /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA634D4220369F90044823B /* SearchViewController.swift */; };
+		DDA634D722036A880044823B /* SearchViewInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA634D622036A880044823B /* SearchViewInteractor.swift */; };
+		DDA634D922036AB90044823B /* SearchViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA634D822036AB90044823B /* SearchViewCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +36,9 @@
 		DDA634CD22035F5F0044823B /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		DDA634CF220360320044823B /* MainCollectionViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewCoordinator.swift; sourceTree = "<group>"; };
 		DDA634D1220362410044823B /* MainCollectionViewInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewInteractor.swift; sourceTree = "<group>"; };
+		DDA634D4220369F90044823B /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		DDA634D622036A880044823B /* SearchViewInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewInteractor.swift; sourceTree = "<group>"; };
+		DDA634D822036AB90044823B /* SearchViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewCoordinator.swift; sourceTree = "<group>"; };
 		E7CFAA99128BAFAA8F340095 /* Pods-LastFM.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LastFM.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LastFM/Pods-LastFM.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -116,6 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				DDA634C5220351B50044823B /* MainCollectionViewController */,
+				DDA634D3220369CC0044823B /* SearchViewController */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -135,6 +142,7 @@
 				DDA634CB22035F500044823B /* Coordinator.swift */,
 				DDA634CD22035F5F0044823B /* AppCoordinator.swift */,
 				DDA634CF220360320044823B /* MainCollectionViewCoordinator.swift */,
+				DDA634D822036AB90044823B /* SearchViewCoordinator.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -146,6 +154,15 @@
 				DDA634D1220362410044823B /* MainCollectionViewInteractor.swift */,
 			);
 			path = MainCollectionViewController;
+			sourceTree = "<group>";
+		};
+		DDA634D3220369CC0044823B /* SearchViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DDA634D4220369F90044823B /* SearchViewController.swift */,
+				DDA634D622036A880044823B /* SearchViewInteractor.swift */,
+			);
+			path = SearchViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -267,9 +284,12 @@
 				DDA634CE22035F5F0044823B /* AppCoordinator.swift in Sources */,
 				DDA634D0220360320044823B /* MainCollectionViewCoordinator.swift in Sources */,
 				DDA634C7220351E70044823B /* MainCollectionViewController.swift in Sources */,
+				DDA634D5220369F90044823B /* SearchViewController.swift in Sources */,
 				DDA634A922034C430044823B /* AppDelegate.swift in Sources */,
 				DDA634D2220362410044823B /* MainCollectionViewInteractor.swift in Sources */,
+				DDA634D722036A880044823B /* SearchViewInteractor.swift in Sources */,
 				DDA634CC22035F500044823B /* Coordinator.swift in Sources */,
+				DDA634D922036AB90044823B /* SearchViewCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

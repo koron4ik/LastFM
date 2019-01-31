@@ -13,7 +13,8 @@ protocol MainCollectionViewControllerInteractor: class {
 }
 
 protocol MainCollectionViewControllerCoordinator: class {
-    
+    func showSearchViewController()
+    func dismiss()
 }
 
 class MainCollectionViewController: UICollectionViewController {
@@ -25,5 +26,17 @@ class MainCollectionViewController: UICollectionViewController {
         super.viewDidLoad()
 
     }
-
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if isMovingFromParent {
+            coordinator?.dismiss()
+        }
+    }
+    
+    @IBAction func searchButtonPressed(_ sender: Any) {
+        coordinator?.showSearchViewController()
+    }
+    
 }

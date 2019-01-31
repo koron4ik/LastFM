@@ -30,6 +30,13 @@ class MainCollectionViewCoordinator: Coordinator, MainCollectionViewControllerCo
     func dismiss() {
         self.delegate?.finishedFlow(coordinator: self)
     }
+    
+    func showSearchViewController() {
+        let searchwViewCoordinator = SearchViewCoordinator(rootViewController: rootViewController)
+        self.add(childCoordinator: searchwViewCoordinator)
+        searchwViewCoordinator.delegate = self
+        searchwViewCoordinator.start()
+    }
 }
 
 extension MainCollectionViewCoordinator {
@@ -45,5 +52,12 @@ extension MainCollectionViewCoordinator {
         viewController.coordinator = self
         
         return viewController
+    }
+}
+
+extension MainCollectionViewCoordinator: FinishCoordinatorDelegate {
+    
+    func finishedFlow(coordinator: Coordinator) {
+        self.remove(childCoordinator: coordinator)
     }
 }

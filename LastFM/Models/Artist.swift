@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Root: Codable {
+class ArtistsRoot: Codable {
     
     enum ResultCodingKeys: String, CodingKey {
         case results
@@ -24,7 +24,7 @@ struct Root: Codable {
     
     let artists: [Artist]
     
-    init(from decoder: Decoder) throws {
+    required init(from decoder: Decoder) throws {
         let result = try decoder.container(keyedBy: ResultCodingKeys.self)
         let artistmatches = try result.nestedContainer(keyedBy: ArtistmatchesCodingKeys.self,
                                                        forKey: .results)
@@ -35,14 +35,14 @@ struct Root: Codable {
     }
 }
 
-struct Artist: Codable {
+class Artist: Codable {
     
     let listeners: Int
-    private let images: [Image]
     let name: String
     let mbid: String
     let url: String
     
+    private let images: [Image]
     lazy var imageUrl: [ImageSize: String] = [
         .small: images[0].url,
         .medium: images[1].url,
@@ -59,31 +59,13 @@ struct Artist: Codable {
         case images = "image"
     }
 
-    init(from decoder: Decoder) throws {
+    required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        
         self.listeners = Int(try container.decode(String.self, forKey: .listeners)) ?? 0
         self.name = try container.decode(String.self, forKey: .name)
         self.mbid = try container.decode(String.self, forKey: .mbid)
         self.url = try container.decode(String.self, forKey: .url)
         self.images = try container.decode([Image].self, forKey: .images)
-    }
-}
-
-enum ImageSize: String, Codable {
-    case small
-    case medium
-    case large
-    case extralarge
-    case mega
-}
-
-struct Image: Codable {
-    
-    let url: String
-    let size: ImageSize
-    
-    enum CodingKeys: String, CodingKey {
-        case url = "#text"
-        case size
     }
 }

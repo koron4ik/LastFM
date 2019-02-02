@@ -13,6 +13,7 @@ protocol SearchViewControllerInteractor: class {
 }
 
 protocol SearchViewControllerCoordinator: class {
+    func showAlbums(artist: Artist)
     func dismiss()
 }
 
@@ -100,9 +101,13 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         return 55
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        coordinator?.showAlbums(artist: artists[indexPath.row])
+    }
+        
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
-        var artist = artists[indexPath.row]
+        let artist = artists[indexPath.row]
         
         cell.textLabel?.text = artist.name
         cell.imageView?.image = UIImage(named: "placeholder")?.resizedImage(newSize: CGSize(width: 45,
@@ -115,6 +120,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
                 updateCell.imageView?.image = image
             }
         }
+        
         return cell
     }
 }

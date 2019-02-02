@@ -69,11 +69,11 @@
                                     <outlet property="delegate" destination="hCl-O3-tVh" id="F3J-oQ-xL7"/>
                                 </connections>
                             </searchBar>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ym4-qk-2JF">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ym4-qk-2JF">
                                 <rect key="frame" x="0.0" y="120" width="375" height="547"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ArtistCell" rowHeight="60" id="fXr-6M-LKz">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ArtistCell" rowHeight="60" id="fXr-6M-LKz">
                                         <rect key="frame" x="0.0" y="28" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fXr-6M-LKz" id="hT4-DU-1K3">
@@ -109,5 +109,109 @@
             </objects>
             <point key="canvasLocation" x="1253.5999999999999" y="25.637181409295355"/>
         </scene>
+        <!--Albums Collection View Controller-->
+        <scene sceneID="mzh-Ms-8cl">
+            <objects>
+                <collectionViewController storyboardIdentifier="AlbumsCollectionViewController" id="R0E-sg-JKg" customClass="AlbumsCollectionViewController" customModule="LastFM" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="Js6-Eg-ryY">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="qs1-rL-BLF">
+                            <size key="itemSize" width="50" height="50"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="AlbumCell" id="Khq-kg-k8W" customClass="AlbumCell" customModule="LastFM" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="172" height="200"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                    <rect key="frame" x="0.0" y="0.0" width="172" height="200"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="music_placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="z4z-id-XMf">
+                                            <rect key="frame" x="0.0" y="0.0" width="172" height="172"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                    <integer key="value" value="10"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </imageView>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uqb-kV-kiY">
+                                            <rect key="frame" x="154" y="178" width="16" height="16"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="16" id="Gt7-Km-f0F"/>
+                                                <constraint firstAttribute="width" secondItem="uqb-kV-kiY" secondAttribute="height" multiplier="1:1" id="QbY-Je-RUD"/>
+                                            </constraints>
+                                            <state key="normal" image="unfavorite"/>
+                                            <connections>
+                                                <action selector="favouriteAlbumButtonPressed:" destination="Khq-kg-k8W" eventType="touchUpInside" id="APb-Md-krq"/>
+                                            </connections>
+                                        </button>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hgw-2z-l06">
+                                            <rect key="frame" x="2" y="178" width="146" height="16"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="16" id="SRo-CZ-Psp"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </view>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="z4z-id-XMf" firstAttribute="top" secondItem="Khq-kg-k8W" secondAttribute="top" id="6lG-hu-Zfu"/>
+                                    <constraint firstAttribute="trailing" secondItem="z4z-id-XMf" secondAttribute="trailing" id="C4v-lp-MDh"/>
+                                    <constraint firstItem="z4z-id-XMf" firstAttribute="leading" secondItem="Khq-kg-k8W" secondAttribute="leading" id="CQI-4t-7a1"/>
+                                    <constraint firstItem="hgw-2z-l06" firstAttribute="top" secondItem="z4z-id-XMf" secondAttribute="bottom" constant="6" id="btA-Yg-Hda"/>
+                                    <constraint firstItem="uqb-kV-kiY" firstAttribute="leading" secondItem="hgw-2z-l06" secondAttribute="trailing" constant="6" id="dhO-u6-fiZ"/>
+                                    <constraint firstAttribute="trailing" secondItem="uqb-kV-kiY" secondAttribute="trailing" constant="2" id="eq8-fj-aZX"/>
+                                    <constraint firstAttribute="bottom" secondItem="hgw-2z-l06" secondAttribute="bottom" constant="6" id="i9i-5H-rtG"/>
+                                    <constraint firstItem="hgw-2z-l06" firstAttribute="leading" secondItem="Khq-kg-k8W" secondAttribute="leading" constant="2" id="lRC-2W-v95"/>
+                                    <constraint firstAttribute="bottom" secondItem="uqb-kV-kiY" secondAttribute="bottom" constant="6" id="laz-sE-CVI"/>
+                                    <constraint firstItem="uqb-kV-kiY" firstAttribute="top" secondItem="z4z-id-XMf" secondAttribute="bottom" constant="6" id="pgb-qB-Jg8"/>
+                                </constraints>
+                                <size key="customSize" width="172" height="200"/>
+                                <connections>
+                                    <outlet property="albumImageView" destination="z4z-id-XMf" id="b9h-L6-9QD"/>
+                                    <outlet property="artistNameLabel" destination="hgw-2z-l06" id="01r-fk-82J"/>
+                                    <outlet property="favouriteAlbumButton" destination="uqb-kV-kiY" id="idC-m5-WNb"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="R0E-sg-JKg" id="tqP-1R-Jq0"/>
+                            <outlet property="delegate" destination="R0E-sg-JKg" id="vfU-8x-97s"/>
+                        </connections>
+                    </collectionView>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jsV-BZ-iqv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2173.5999999999999" y="25.637181409295355"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="3hM-sP-SWg">
+            <objects>
+                <viewController storyboardIdentifier="AlbumDetailsViewController" id="XTU-H0-Qfy" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hrs-xJ-ULQ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="oYW-3s-G0C"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lO9-vc-VBC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3055" y="26"/>
+        </scene>
     </scenes>
+    <resources>
+        <image name="music_placeholder" width="800" height="800"/>
+        <image name="unfavorite" width="24" height="24"/>
+    </resources>
 </document>

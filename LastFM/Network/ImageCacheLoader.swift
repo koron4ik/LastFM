@@ -28,7 +28,7 @@ class ImageCacheLoader {
         }
 
         if let url = URL(string: imagePath) {
-            URLSession.shared.dataTask(with: url) { [weak self] (data, _, error) in
+            task = session.dataTask(with: url) { [weak self] (data, _, error) in
                 if let error = error {
                     completionHandler(nil, error)
                 }
@@ -39,7 +39,8 @@ class ImageCacheLoader {
                         completionHandler(image, nil)
                     }
                 }
-            }.resume()
+            }
+            task.resume()
         }
     }
 }

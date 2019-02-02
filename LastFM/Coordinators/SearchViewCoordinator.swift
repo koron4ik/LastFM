@@ -20,7 +20,7 @@ class SearchViewCoordinator: Coordinator, SearchViewControllerCoordinator {
     }
     
     func start() {
-        self.rootViewController.pushViewController(self.searchViewController(), animated: true)
+        self.rootViewController.pushViewController(self.presentingViewController, animated: true)
     }
     
     func stop() {
@@ -29,6 +29,13 @@ class SearchViewCoordinator: Coordinator, SearchViewControllerCoordinator {
     
     func dismiss() {
         self.delegate?.finishedFlow(coordinator: self)
+    }
+    
+    func showAlbums(artist: Artist) {
+        let albumsCollectionViewController = AlbumsCollectionViewCoordinator(rootViewController: rootViewController, artist: artist)
+        self.add(childCoordinator: albumsCollectionViewController)
+        albumsCollectionViewController.delegate = self
+        albumsCollectionViewController.start()
     }
 }
 
@@ -45,5 +52,12 @@ extension SearchViewCoordinator {
         viewController.coordinator = self
         
         return viewController
+    }
+}
+
+extension SearchViewCoordinator: FinishCoordinatorDelegate {
+    
+    func finishedFlow(coordinator: Coordinator) {
+        self.remove(childCoordinator: coordinator)
     }
 }

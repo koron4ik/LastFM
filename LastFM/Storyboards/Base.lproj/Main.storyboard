@@ -146,7 +146,7 @@
                                                 <constraint firstAttribute="height" constant="16" id="Gt7-Km-f0F"/>
                                                 <constraint firstAttribute="width" secondItem="uqb-kV-kiY" secondAttribute="height" multiplier="1:1" id="QbY-Je-RUD"/>
                                             </constraints>
-                                            <state key="normal" image="unfavorite"/>
+                                            <state key="normal" image="unfavourite"/>
                                             <connections>
                                                 <action selector="favouriteAlbumButtonPressed:" destination="Khq-kg-k8W" eventType="touchUpInside" id="APb-Md-krq"/>
                                             </connections>
@@ -235,7 +235,7 @@
                                         <constraint firstAttribute="height" constant="24" id="GSo-iQ-N4X"/>
                                         <constraint firstAttribute="width" secondItem="pn8-iU-2R7" secondAttribute="height" multiplier="1:1" id="UCL-pK-E8r"/>
                                     </constraints>
-                                    <state key="normal" image="unfavorite"/>
+                                    <state key="normal" image="unfavourite"/>
                                     <connections>
                                         <action selector="favouriteButtonPressed:" destination="GeI-Vi-LF9" eventType="touchUpInside" id="PE0-U4-3gx"/>
                                     </connections>
@@ -317,6 +317,6 @@
     </scenes>
     <resources>
         <image name="music_placeholder" width="800" height="800"/>
-        <image name="unfavorite" width="24" height="24"/>
+        <image name="unfavourite" width="24" height="24"/>
     </resources>
 </document>

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 class AlbumsRoot: Codable {
     
@@ -28,12 +29,27 @@ class AlbumsRoot: Codable {
     }
 }
 
+class ImageUrl {
+    let small: String?
+    let medium: String?
+    let large: String?
+    let extralarge: String?
+    let mega: String?
+    
+    init(images: [Image]) {
+        self.small = images[0].url
+        self.medium = images[1].url
+        self.large = images[2].url
+        self.extralarge = images[3].url
+        self.mega = images[4].url
+    }
+}
+
 class Album: Codable {
     
     let playcount: Int
     let name: String
     let artist: Artist
-    let mbid: String?
     let url: String
     
     private let images: [Image]
@@ -48,7 +64,6 @@ class Album: Codable {
         case playcount
         case name
         case artist
-        case mbid
         case url
         case images = "image"
     }

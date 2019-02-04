@@ -70,23 +70,44 @@ class CoreDataManager {
 
 extension CoreDataManager {
     
-    func saveFavouriteGoods(with name: String, ref: String, image: Data?, rating: Float, reviews: Int16) {
+    func saveAlbumToFavourite(_ album: Album, imageData: Data? = nil, tracks: [Track]? = nil) {
         let entity = NSEntityDescription.entity(forEntityName: "AlbumCoreData",
                                                 in: self.managedObjectContext)!
         
         let albumCoreData = AlbumCoreData(entity: entity, insertInto: self.managedObjectContext)
-        albumCoreData.name = name
-        albumCoreData.image = image
+        
+        albumCoreData.name = album.name
+        albumCoreData.artistName = album.artist.name
+        
+        if imageData != nil {
+            albumCoreData.image = imageData
+            albumCoreData.imageUrl = album.imageUrl[.extralarge]
+        } else {
+            albumCoreData.image = nil
+            albumCoreData.imageUrl = album.imageUrl[.extralarge]
+        }
+        
+        if let tracks = tracks {
+            tracks.forEach {
+                let track = TrackCoreData(entity: entity, insertInto: self.managedObjectContext)
+                
+                track.name = $0.name
+                track.duration = Int16($0.duration)
+                albumCoreData.tracks?.append(track)
+            }
+        }
         
         self.saveContext()
     }
     
-    func albumIsExist(with ref: String) -> Bool {
-        let goods = self.loadAlbums()
+    func albumIsExist(_ album: Album) -> Bool {
+        let albums = self.loadAlbums()
         
-//        for item in goods where item.ref == ref {
-//            return true
-//        }
+        for item in albums {
+            if item.name == album.name && item.artistName == album.artist.name {
+                return true
+            }
+        }
         
         return false
     }
@@ -102,16 +123,18 @@ extension CoreDataManager {
         return fetchResult
     }
     
-    func deleteAlbum(with ref: String) {
+    func deleteAlbum(_ album: Album) {
         let fetchRequest = NSFetchRequest<AlbumCoreData>(entityName: "AlbumCoreData")
         var fetchResults = [AlbumCoreData]()
         do {
             fetchResults = try managedObjectContext.fetch(fetchRequest)
-//            for result in fetchResults where result.ref == ref {
-//                managedObjectContext.delete(result)
-//            }
+            for result in fetchResults {
+                if result.name == album.name && result.artistName == album.artist.name {
+                    managedObjectContext.delete(result)
+                }
+            }
         } catch let error as NSError {
-            print("Delete route by ref in GoodsCoreData error: \(error)")
+            print("Delete route by ref in AlbumsCoreData error: \(error)")
         }
         self.saveContext()
     }

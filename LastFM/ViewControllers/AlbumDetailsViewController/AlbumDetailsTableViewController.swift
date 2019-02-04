@@ -27,6 +27,14 @@ class AlbumDetailsTableViewController: UITableViewController {
     weak var coordinator: AlbumDetailsTableViewCoordinator?
     
     private var tracks: [Track] = []
+    //private var state: State
+    
+    private var isFavourite = false {
+        didSet {
+            let image = isFavourite ? UIImage(named: "favourite") : UIImage(named: "unfavourite")
+            favouriteButton.setImage(image, for: .normal)
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,10 +68,19 @@ class AlbumDetailsTableViewController: UITableViewController {
                 self?.albumImageView.image = image
             }
         }.resume()
+        
+        if CoreDataManager.shared.albumIsExist(interactor.album) {
+            isFavourite = true
+        }
     }
     
     @IBAction func favouriteButtonPressed(_ sender: Any) {
-        
+        if isFavourite {
+            CoreDataManager.shared.deleteAlbum(interactor.album)
+        } else {
+            CoreDataManager.shared.saveAlbumToFavourite(interactor.album, imageData: albumImageView.image?.pngData(), tracks: tracks)
+        }
+        isFavourite = !isFavourite
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {

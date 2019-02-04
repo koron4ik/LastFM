@@ -32,11 +32,18 @@ class MainCollectionViewCoordinator: Coordinator, MainCollectionViewControllerCo
         self.delegate?.finishedFlow(coordinator: self)
     }
     
-    func showSearchViewController() {
+    func showArtistsSearch() {
         let searchwViewCoordinator = SearchViewCoordinator(rootViewController: rootViewController)
         self.add(childCoordinator: searchwViewCoordinator)
         searchwViewCoordinator.delegate = self
         searchwViewCoordinator.start()
+    }
+    
+    func showAlbumDetails(album: Album) {
+        let albumDetailsTableViewCoordinator = AlbumDetailsTableViewCoordinator(rootViewController: rootViewController, album: album)
+        self.add(childCoordinator: albumDetailsTableViewCoordinator)
+        albumDetailsTableViewCoordinator.delegate = self
+        albumDetailsTableViewCoordinator.start()
     }
 }
 

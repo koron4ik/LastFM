@@ -37,31 +37,26 @@ class ArtistsRoot: Codable {
 
 class Artist: Codable {
     
-   // let listeners: Int
     let name: String
-   // let mbid: String?
     let url: String
     
     private let images: [Image]?
     var imageUrl: [ImageSize: String]? {
-        get {
-            if let images = images {
-                return [
-                    .small: images[0].url,
-                    .medium: images[1].url,
-                    .large: images[2].url,
-                    .extralarge: images[3].url,
-                    .mega: images[4].url
-                ]
-            }
-            return nil
+        if let images = images {
+            return [
+                .small: images[0].url,
+                .medium: images[1].url,
+                .large: images[2].url,
+                .extralarge: images[3].url,
+                .mega: images[4].url
+            ]
         }
+        return nil
+    
     }
 
     enum CodingKeys: String, CodingKey {
-       // case listeners
         case name
-      //  case mbid
         case url
         case images = "image"
     }

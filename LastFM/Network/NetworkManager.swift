@@ -45,7 +45,6 @@ class NetworkManager {
         
         URLSession.shared.dataTask(with: request) { data, _, error in
             if let data = data {
-                print(data.prettyPrintedJSONString!)
                 do {
                     let root = try JSONDecoder().decode(AlbumsRoot.self, from: data)
                     completion(.success(root.albums))
@@ -72,7 +71,6 @@ class NetworkManager {
         
         URLSession.shared.dataTask(with: request) { data, _, error in
             if let data = data {
-                print(data.prettyPrintedJSONString!)
                 do {
                     let root = try JSONDecoder().decode(TracksRoot.self, from: data)
                     completion(.success(root.tracks))

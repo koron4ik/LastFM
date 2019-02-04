@@ -9,7 +9,7 @@
 import UIKit
 
 protocol AlbumCellDelegate: class {
-    func favouritesPressed(_ albumCell: AlbumCell)
+    func albumCell(_ albumCell: AlbumCell, favouriteButtonPressedAt indexPath: IndexPath)
 }
 
 class AlbumCell: UICollectionViewCell {
@@ -20,8 +20,17 @@ class AlbumCell: UICollectionViewCell {
     @IBOutlet weak var artistNameLabel: UILabel!
     @IBOutlet weak var favouriteAlbumButton: UIButton!
     
+    var indexPath: IndexPath!
+    var isFavourite: Bool = false {
+        didSet {
+            let image = isFavourite ? UIImage(named: "favourite") : UIImage(named: "unfavourite")
+            favouriteAlbumButton.setImage(image, for: .normal)
+        }
+    }
+    
     @IBAction func favouriteAlbumButtonPressed(_ sender: Any) {
-        delegate?.favouritesPressed(self)
+        delegate?.albumCell(self, favouriteButtonPressedAt: indexPath)
+        isFavourite = !isFavourite
     }
     
 }

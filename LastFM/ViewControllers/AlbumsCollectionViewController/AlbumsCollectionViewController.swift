@@ -8,8 +8,6 @@
 
 import UIKit
 
-private let reuseIdentifier = "AlbumCell"
-
 protocol AlbumsCollectionViewControllerIntercator: class {
     var artist: Artist { get }
 }
@@ -26,6 +24,7 @@ class AlbumsCollectionViewController: UICollectionViewController {
     
     private var albums: [Album] = []
     private var imageLoader: ImageCacheLoader!
+    private let reuseIdentifier = "AlbumCell"
     private let itemsPerRow: CGFloat = 2
     private let sectionInsets = UIEdgeInsets(top: 20.0,
                                              left: 20.0,
@@ -66,11 +65,16 @@ class AlbumsCollectionViewController: UICollectionViewController {
         
         let album = albums[indexPath.row]
         
+        cell.delegate = self
+        cell.indexPath = indexPath
         cell.artistNameLabel.text = album.name
         imageLoader.obtainImageWithPath(imagePath: album.imageUrl[.large] ?? "") { (image, _) in
             if let updateCell = collectionView.cellForItem(at: indexPath) as? AlbumCell {
                 updateCell.albumImageView.image = image
             }
+        }
+        if CoreDataManager.shared.albumIsExist(album) {
+            cell.isFavourite = true
         }
     
         return cell
@@ -110,6 +114,17 @@ class AlbumsCollectionViewController: UICollectionViewController {
     }
     */
 
+}
+
+extension AlbumsCollectionViewController: AlbumCellDelegate {
+    
+    func albumCell(_ albumCell: AlbumCell, favouriteButtonPressedAt indexPath: IndexPath) {
+        if albumCell.isFavourite {
+            CoreDataManager.shared.saveAlbumToFavourite(albums[indexPath.row])
+        } else {
+            CoreDataManager.shared.deleteAlbum(albums[indexPath.row])
+        }
+    }
 }
 
 extension AlbumsCollectionViewController: UICollectionViewDelegateFlowLayout {

@@ -15,7 +15,7 @@ protocol AlbumsCollectionViewControllerIntercator: class {
 }
 
 protocol AlbumsCollectionViewControllerCoordinator: class {
-    func showAlbumDetails()
+    func showAlbumDetails(album: Album)
     func dismiss()
 }
 
@@ -37,12 +37,14 @@ class AlbumsCollectionViewController: UICollectionViewController {
         
         self.imageLoader = ImageCacheLoader()
         
-        NetworkManager.getTopAlbums(artist: interactor.artist) { [weak self] (result) in
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        NetworkManager.getTopAlbums(artistName: interactor.artist.name) { [weak self] (result) in
             switch result {
             case .success(let albums):
                 guard let albums = albums else { return }
                 self?.albums = albums
                 DispatchQueue.main.async {
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     self?.collectionView.reloadData()
                 }
             case .failure(let error):
@@ -74,6 +76,9 @@ class AlbumsCollectionViewController: UICollectionViewController {
         return cell
     }
 
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        coordinator?.showAlbumDetails(album: albums[indexPath.row])
+    }
     // MARK: UICollectionViewDelegate
 
     /*

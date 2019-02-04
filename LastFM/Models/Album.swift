@@ -32,7 +32,7 @@ class Album: Codable {
     
     let playcount: Int
     let name: String
-    //let artist: Artist
+    let artist: Artist
     let mbid: String?
     let url: String
     
@@ -47,7 +47,7 @@ class Album: Codable {
     enum CodingKeys: String, CodingKey {
         case playcount
         case name
-        //case artist
+        case artist
         case mbid
         case url
         case images = "image"

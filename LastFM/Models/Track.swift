@@ -8,9 +8,41 @@
 
 import Foundation
 
-struct Track: Decodable {
+class TracksRoot: Codable {
     
-    var name: String
-    var artist: String
-    var url: String
+    enum AlbumCodingKeys: String, CodingKey {
+        case album
+    }
+    
+    enum TracksCodingKeys: String, CodingKey {
+        case tracks
+    }
+    
+    enum TrackCodingKeys: String, CodingKey {
+        case track
+    }
+    
+    let tracks: [Track]
+    
+    required init(from decoder: Decoder) throws {
+        let album = try decoder.container(keyedBy: AlbumCodingKeys.self)
+        let tracks = try album.nestedContainer(keyedBy: TracksCodingKeys.self,
+                                                       forKey: .album)
+        let track = try tracks.nestedContainer(keyedBy: TrackCodingKeys.self, forKey: .tracks)
+        
+        self.tracks = try track.decode([Track].self, forKey: .track)
+    }
+}
+
+class Track: Codable {
+    
+    let name: String
+    let duration: Int
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.name = try container.decode(String.self, forKey: .name)
+        self.duration = Int(try container.decode(String.self, forKey: .duration)) ?? 0
+    }
 }

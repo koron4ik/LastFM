@@ -30,7 +30,9 @@ class ImageCacheLoader {
         if let url = URL(string: imagePath) {
             task = session.dataTask(with: url) { [weak self] (data, _, error) in
                 if let error = error {
-                    completionHandler(nil, error)
+                    DispatchQueue.main.async {
+                        completionHandler(nil, error)
+                    }
                 }
                 
                 if let data = data, let image = UIImage(data: data) {

@@ -33,8 +33,11 @@ class AlbumsCollectionViewCoordinator: Coordinator, AlbumsCollectionViewControll
         self.delegate?.finishedFlow(coordinator: self)
     }
     
-    func showAlbumDetails() {
-        
+    func showAlbumDetails(album: Album) {
+        let albumDetailsTableViewCoordinator = AlbumDetailsTableViewCoordinator(rootViewController: rootViewController, album: album)
+        self.add(childCoordinator: albumDetailsTableViewCoordinator)
+        albumDetailsTableViewCoordinator.delegate = self
+        albumDetailsTableViewCoordinator.start()
     }
 }
 

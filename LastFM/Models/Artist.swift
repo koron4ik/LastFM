@@ -37,35 +37,42 @@ class ArtistsRoot: Codable {
 
 class Artist: Codable {
     
-    let listeners: Int
+   // let listeners: Int
     let name: String
-    let mbid: String
+   // let mbid: String?
     let url: String
     
-    private let images: [Image]
-    lazy var imageUrl: [ImageSize: String] = [
-        .small: images[0].url,
-        .medium: images[1].url,
-        .large: images[2].url,
-        .extralarge: images[3].url,
-        .mega: images[4].url
-    ]
+    private let images: [Image]?
+    var imageUrl: [ImageSize: String]? {
+        get {
+            if let images = images {
+                return [
+                    .small: images[0].url,
+                    .medium: images[1].url,
+                    .large: images[2].url,
+                    .extralarge: images[3].url,
+                    .mega: images[4].url
+                ]
+            }
+            return nil
+        }
+    }
 
     enum CodingKeys: String, CodingKey {
-        case listeners
+       // case listeners
         case name
-        case mbid
+      //  case mbid
         case url
         case images = "image"
     }
 
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        self.listeners = Int(try container.decode(String.self, forKey: .listeners)) ?? 0
-        self.name = try container.decode(String.self, forKey: .name)
-        self.mbid = try container.decode(String.self, forKey: .mbid)
-        self.url = try container.decode(String.self, forKey: .url)
-        self.images = try container.decode([Image].self, forKey: .images)
-    }
+//    required init(from decoder: Decoder) throws {
+//        let container = try decoder.container(keyedBy: CodingKeys.self)
+//
+//        self.listeners = Int(try container.decode(String.self, forKey: .listeners)) ?? 0
+//        self.name = try container.decode(String.self, forKey: .name)
+//        self.mbid = try container.decode(String.self, forKey: .mbid)
+//        self.url = try container.decode(String.self, forKey: .url)
+//        self.images = try container.decode([Image].self, forKey: .images)
+//    }
 }

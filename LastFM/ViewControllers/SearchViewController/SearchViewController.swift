@@ -115,7 +115,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         cell.imageView?.layer.cornerRadius = 22
         cell.imageView?.clipsToBounds = true
 
-        imageLoader.obtainImageWithPath(imagePath: artist.imageUrl[.medium] ?? "") { (image, _) in
+        imageLoader.obtainImageWithPath(imagePath: artist.imageUrl![.medium] ?? "") { (image, _) in
             if let updateCell = tableView.cellForRow(at: indexPath) {
                 updateCell.imageView?.image = image
             }

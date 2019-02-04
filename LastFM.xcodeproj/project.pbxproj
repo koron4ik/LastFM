@@ -18,6 +18,12 @@
 		DD6F19022204536D003ADBC4 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6F19012204536D003ADBC4 /* Result.swift */; };
 		DD6F190722046D73003ADBC4 /* Data+prettyPrintedJSONString.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6F190622046D73003ADBC4 /* Data+prettyPrintedJSONString.swift */; };
 		DD6F190C2204C8C1003ADBC4 /* ArtistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6F190B2204C8C1003ADBC4 /* ArtistCell.swift */; };
+		DD96A17A22071BFF0041136B /* AlbumDetailsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD96A17922071BFF0041136B /* AlbumDetailsTableViewController.swift */; };
+		DD96A17C220728750041136B /* AlbumDetailsTableViewInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD96A17B220728750041136B /* AlbumDetailsTableViewInteractor.swift */; };
+		DD96A17E220728860041136B /* AlbumDetailsTableViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD96A17D220728860041136B /* AlbumDetailsTableViewCoordinator.swift */; };
+		DD96A1802207323F0041136B /* TrackCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD96A17F2207323F0041136B /* TrackCell.swift */; };
+		DD96A183220770B90041136B /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD96A182220770B90041136B /* CoreDataManager.swift */; };
+		DD96A186220770EC0041136B /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DD96A184220770EC0041136B /* Model.xcdatamodeld */; };
 		DDA3559E2205A67D0073C7BF /* AlbumsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA3559D2205A67D0073C7BF /* AlbumsCollectionViewController.swift */; };
 		DDA355A02205A6BD0073C7BF /* AlbumsCollectionViewInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA3559F2205A6BD0073C7BF /* AlbumsCollectionViewInteractor.swift */; };
 		DDA355A22205A6D30073C7BF /* AlbumsCollectionViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA355A12205A6D30073C7BF /* AlbumsCollectionViewCoordinator.swift */; };
@@ -51,6 +57,12 @@
 		DD6F19012204536D003ADBC4 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		DD6F190622046D73003ADBC4 /* Data+prettyPrintedJSONString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+prettyPrintedJSONString.swift"; sourceTree = "<group>"; };
 		DD6F190B2204C8C1003ADBC4 /* ArtistCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistCell.swift; sourceTree = "<group>"; };
+		DD96A17922071BFF0041136B /* AlbumDetailsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetailsTableViewController.swift; sourceTree = "<group>"; };
+		DD96A17B220728750041136B /* AlbumDetailsTableViewInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetailsTableViewInteractor.swift; sourceTree = "<group>"; };
+		DD96A17D220728860041136B /* AlbumDetailsTableViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetailsTableViewCoordinator.swift; sourceTree = "<group>"; };
+		DD96A17F2207323F0041136B /* TrackCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackCell.swift; sourceTree = "<group>"; };
+		DD96A182220770B90041136B /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		DD96A185220770EC0041136B /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		DDA3559D2205A67D0073C7BF /* AlbumsCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsCollectionViewController.swift; sourceTree = "<group>"; };
 		DDA3559F2205A6BD0073C7BF /* AlbumsCollectionViewInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsCollectionViewInteractor.swift; sourceTree = "<group>"; };
 		DDA355A12205A6D30073C7BF /* AlbumsCollectionViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsCollectionViewCoordinator.swift; sourceTree = "<group>"; };
@@ -147,8 +159,26 @@
 			children = (
 				DD6F190B2204C8C1003ADBC4 /* ArtistCell.swift */,
 				DDA355A32205B2070073C7BF /* AlbumCell.swift */,
+				DD96A17F2207323F0041136B /* TrackCell.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		DD96A17822071B150041136B /* AlbumDetailsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DD96A17922071BFF0041136B /* AlbumDetailsTableViewController.swift */,
+				DD96A17B220728750041136B /* AlbumDetailsTableViewInteractor.swift */,
+			);
+			path = AlbumDetailsViewController;
+			sourceTree = "<group>";
+		};
+		DD96A1812207708A0041136B /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				DD96A182220770B90041136B /* CoreDataManager.swift */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		DDA3559C2205A6580073C7BF /* AlbumsCollectionViewController */ = {
@@ -181,6 +211,7 @@
 		DDA634A722034C430044823B /* LastFM */ = {
 			isa = PBXGroup;
 			children = (
+				DD96A184220770EC0041136B /* Model.xcdatamodeld */,
 				DDA634A822034C430044823B /* AppDelegate.swift */,
 				DDA634BB22034D600044823B /* Info */,
 				DD6F190522046D4C003ADBC4 /* Extensions */,
@@ -189,6 +220,7 @@
 				DDA634BD22034D860044823B /* ViewControllers */,
 				DD6F19082204BCCE003ADBC4 /* Views */,
 				DD6F19002204531D003ADBC4 /* Helpers */,
+				DD96A1812207708A0041136B /* Managers */,
 				DD6F18F422044909003ADBC4 /* Network */,
 				DD6F18F522044917003ADBC4 /* Models */,
 			);
@@ -215,6 +247,7 @@
 		DDA634BD22034D860044823B /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				DD96A17822071B150041136B /* AlbumDetailsViewController */,
 				DDA3559C2205A6580073C7BF /* AlbumsCollectionViewController */,
 				DDA634C5220351B50044823B /* MainCollectionViewController */,
 				DDA634D3220369CC0044823B /* SearchViewController */,
@@ -239,6 +272,7 @@
 				DDA634CF220360320044823B /* MainCollectionViewCoordinator.swift */,
 				DDA634D822036AB90044823B /* SearchViewCoordinator.swift */,
 				DDA355A12205A6D30073C7BF /* AlbumsCollectionViewCoordinator.swift */,
+				DD96A17D220728860041136B /* AlbumDetailsTableViewCoordinator.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -377,6 +411,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD96A1802207323F0041136B /* TrackCell.swift in Sources */,
 				DDA634CE22035F5F0044823B /* AppCoordinator.swift in Sources */,
 				DD6F18F92204497E003ADBC4 /* Constants.swift in Sources */,
 				DDA3559E2205A67D0073C7BF /* AlbumsCollectionViewController.swift in Sources */,
@@ -386,6 +421,7 @@
 				DD6F18F72204496F003ADBC4 /* NetworkManager.swift in Sources */,
 				DDA355A22205A6D30073C7BF /* AlbumsCollectionViewCoordinator.swift in Sources */,
 				DDA355A42205B2070073C7BF /* AlbumCell.swift in Sources */,
+				DD96A17C220728750041136B /* AlbumDetailsTableViewInteractor.swift in Sources */,
 				DDA634C7220351E70044823B /* MainCollectionViewController.swift in Sources */,
 				DD6F190722046D73003ADBC4 /* Data+prettyPrintedJSONString.swift in Sources */,
 				DD6F18FD22045124003ADBC4 /* LastFMAPIConfiguration.swift in Sources */,
@@ -393,12 +429,16 @@
 				DD6F18FF22045260003ADBC4 /* Artist.swift in Sources */,
 				DDA634D5220369F90044823B /* SearchViewController.swift in Sources */,
 				DD09375F2205015800A767C8 /* UIImage+resizedImage.swift in Sources */,
+				DD96A183220770B90041136B /* CoreDataManager.swift in Sources */,
 				DDA634A922034C430044823B /* AppDelegate.swift in Sources */,
+				DD96A186220770EC0041136B /* Model.xcdatamodeld in Sources */,
 				DD6F190C2204C8C1003ADBC4 /* ArtistCell.swift in Sources */,
 				DDA634D2220362410044823B /* MainCollectionViewInteractor.swift in Sources */,
 				DDA634D722036A880044823B /* SearchViewInteractor.swift in Sources */,
 				DDA634CC22035F500044823B /* Coordinator.swift in Sources */,
+				DD96A17E220728860041136B /* AlbumDetailsTableViewCoordinator.swift in Sources */,
 				DDA634D922036AB90044823B /* SearchViewCoordinator.swift in Sources */,
+				DD96A17A22071BFF0041136B /* AlbumDetailsTableViewController.swift in Sources */,
 				DD6F18FB22044991003ADBC4 /* Track.swift in Sources */,
 				DDA355A82205B4FF0073C7BF /* Album.swift in Sources */,
 				DDA355AA2205B7190073C7BF /* Image.swift in Sources */,
@@ -603,6 +643,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		DD96A184220770EC0041136B /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				DD96A185220770EC0041136B /* Model.xcdatamodel */,
+			);
+			currentVersion = DD96A185220770EC0041136B /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = DDA6349D22034C430044823B /* Project object */;
 }

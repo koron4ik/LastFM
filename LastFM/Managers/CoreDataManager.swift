@@ -13,7 +13,7 @@ class CoreDataManager {
     
     static let shared = CoreDataManager()
     
-    private let objectModelName = "Model"
+    private let objectModelName = "DataModel"
     private let objectModelExtension = "momd"
     
     private(set) lazy var managedObjectContext: NSManagedObjectContext = {
@@ -66,34 +66,39 @@ class CoreDataManager {
             }
         }
     }
+    
+    lazy var albumEntity = NSEntityDescription.entity(forEntityName: "AlbumCoreData",
+                                                 in: self.managedObjectContext)!
+    lazy var artistEntity = NSEntityDescription.entity(forEntityName: "ArtistCoreData",
+                                                      in: self.managedObjectContext)!
+    lazy var trackEntity = NSEntityDescription.entity(forEntityName: "TrackCoreData",
+                                                      in: self.managedObjectContext)!
 }
 
 extension CoreDataManager {
     
     func saveAlbumToFavourite(_ album: Album, imageData: Data? = nil, tracks: [Track]? = nil) {
-        let entity = NSEntityDescription.entity(forEntityName: "AlbumCoreData",
-                                                in: self.managedObjectContext)!
+        let albumCoreData = AlbumCoreData(entity: albumEntity,
+                                          insertInto: managedObjectContext)
+        let artistCoreData = ArtistCoreData(entity: artistEntity,
+                                            insertInto: managedObjectContext)
         
-        let albumCoreData = AlbumCoreData(entity: entity, insertInto: self.managedObjectContext)
+        artistCoreData.name = album.artist.name
+        artistCoreData.url = album.artist.url
         
         albumCoreData.name = album.name
-        albumCoreData.artistName = album.artist.name
-        
-        if imageData != nil {
-            albumCoreData.image = imageData
-            albumCoreData.imageUrl = album.imageUrl[.extralarge]
-        } else {
-            albumCoreData.image = nil
-            albumCoreData.imageUrl = album.imageUrl[.extralarge]
-        }
+        albumCoreData.artist = artistCoreData
+        albumCoreData.image = imageData
+        albumCoreData.imageUrl = album.imageUrl[.extralarge]
         
         if let tracks = tracks {
             tracks.forEach {
-                let track = TrackCoreData(entity: entity, insertInto: self.managedObjectContext)
+                let track = TrackCoreData(entity: trackEntity,
+                                          insertInto: managedObjectContext)
                 
                 track.name = $0.name
                 track.duration = Int16($0.duration)
-                albumCoreData.tracks?.append(track)
+                albumCoreData.tracks?.adding(track)
             }
         }
         
@@ -104,7 +109,7 @@ extension CoreDataManager {
         let albums = self.loadAlbums()
         
         for item in albums {
-            if item.name == album.name && item.artistName == album.artist.name {
+            if item.name == album.name && item.artist?.name == album.artist.name {
                 return true
             }
         }
@@ -129,7 +134,7 @@ extension CoreDataManager {
         do {
             fetchResults = try managedObjectContext.fetch(fetchRequest)
             for result in fetchResults {
-                if result.name == album.name && result.artistName == album.artist.name {
+                if result.name == album.name && result.artist?.name == album.artist.name {
                     managedObjectContext.delete(result)
                 }
             }

@@ -41,6 +41,7 @@ class MainCollectionViewController: UICollectionViewController {
         super.viewWillAppear(animated)
         
         albums = CoreDataManager.shared.loadAlbums()
+        collectionView.reloadData()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -77,7 +78,7 @@ class MainCollectionViewController: UICollectionViewController {
         }
         
         cell.albumNameLabel.text = album.name
-        cell.artistNameLabel.text = album.artistName
+        cell.artistNameLabel.text = album.artist?.name
         
         return cell
     }

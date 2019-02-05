@@ -23,7 +23,7 @@ class AlbumsCollectionViewController: UICollectionViewController {
     weak var coordinator: AlbumsCollectionViewCoordinator?
     
     private var albums: [Album] = []
-    private var imageLoader: ImageCacheLoader!
+    private var imageLoader: ImageCacheLoader = ImageCacheLoader()
     private let reuseIdentifier = "AlbumCell"
     private let itemsPerRow: CGFloat = 2
     private let sectionInsets = UIEdgeInsets(top: 20.0,
@@ -33,8 +33,6 @@ class AlbumsCollectionViewController: UICollectionViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.imageLoader = ImageCacheLoader()
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         NetworkManager.getTopAlbums(artistName: interactor.artist.name) { [weak self] (result) in
@@ -50,6 +48,22 @@ class AlbumsCollectionViewController: UICollectionViewController {
                 print(error)
             }
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        collectionView.reloadData()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if isMovingFromParent {
+            coordinator?.dismiss()
+        }
+        
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -68,13 +82,15 @@ class AlbumsCollectionViewController: UICollectionViewController {
         cell.delegate = self
         cell.indexPath = indexPath
         cell.albumNameLabel.text = album.name
-        imageLoader.obtainImageWithPath(imagePath: album.imageUrl[.large] ?? "") { (image, _) in
-            if let updateCell = collectionView.cellForItem(at: indexPath) as? AlbumCell {
-                updateCell.albumImageView.image = image
-            }
-        }
+        
         if CoreDataManager.shared.albumIsExist(album) {
             cell.isFavourite = true
+        }
+        
+        imageLoader.obtainImageWithPath(imagePath: album.imageUrl[.large] ?? "") { (image, _) in
+            //if let updateCell = collectionView.cellForItem(at: indexPath) as? AlbumCell {
+                cell.albumImageView.image = image
+            //}
         }
     
         return cell
@@ -83,46 +99,15 @@ class AlbumsCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         coordinator?.showAlbumDetails(album: albums[indexPath.row])
     }
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-    
-    }
-    */
-
 }
 
 extension AlbumsCollectionViewController: AlbumCellDelegate {
     
     func albumCell(_ albumCell: AlbumCell, favouriteButtonPressedAt indexPath: IndexPath) {
         if albumCell.isFavourite {
-            CoreDataManager.shared.saveAlbumToFavourite(albums[indexPath.row])
-        } else {
             CoreDataManager.shared.deleteAlbum(albums[indexPath.row])
+        } else {
+            CoreDataManager.shared.saveAlbumToFavourite(albums[indexPath.row])
         }
     }
 }

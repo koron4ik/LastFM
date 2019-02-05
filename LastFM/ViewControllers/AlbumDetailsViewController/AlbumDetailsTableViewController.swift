@@ -57,6 +57,16 @@ class AlbumDetailsTableViewController: UITableViewController {
         }
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if isMovingFromParent {
+            coordinator?.dismiss()
+        }
+        
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+    }
+    
     private func configureHeaderView() {
         albumNameLabel.text = interactor.album.name
         artistNameLabel.text = interactor.album.artist.name

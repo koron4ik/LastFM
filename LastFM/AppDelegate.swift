@@ -25,6 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             appCoordinator.start()
         }
         
+//        print(NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)[0])
+
         return true
     }
 

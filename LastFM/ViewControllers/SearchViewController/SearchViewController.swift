@@ -20,7 +20,7 @@ protocol SearchViewControllerCoordinator: class {
 class SearchViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
-    //@IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var searchBar: UISearchBar!
     
     var interactor: SearchViewInteractor!
     weak var coordinator: SearchViewCoordinator?
@@ -44,6 +44,8 @@ class SearchViewController: UIViewController {
         if isMovingFromParent {
             coordinator?.dismiss()
         }
+        
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
     
     @objc func loadResult(_ timer: Timer) {
@@ -67,6 +69,12 @@ class SearchViewController: UIViewController {
         }
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        
+        searchBar.resignFirstResponder()
+    }
+    
     deinit {
         textTimer?.invalidate()
     }
@@ -84,6 +92,10 @@ extension SearchViewController: UISearchBarDelegate {
                                          selector: #selector(loadResult(_:)),
                                          userInfo: searchText,
                                          repeats: false)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
     }
 }
 
@@ -116,9 +128,9 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         cell.imageView?.clipsToBounds = true
 
         imageLoader.obtainImageWithPath(imagePath: artist.imageUrl![.medium] ?? "") { (image, _) in
-            if let updateCell = tableView.cellForRow(at: indexPath) {
-                updateCell.imageView?.image = image
-            }
+           // if let updateCell = tableView.cellForRow(at: indexPath) {
+                cell.imageView?.image = image
+           // }
         }
         
         return cell

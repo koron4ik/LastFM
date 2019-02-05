@@ -28,6 +28,14 @@ class AlbumCell: UICollectionViewCell {
         }
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        isFavourite = false
+        albumImageView.image = UIImage(named: "music_placeholder")
+        albumNameLabel.text = nil
+    }
+    
     @IBAction func favouriteAlbumButtonPressed(_ sender: Any) {
         delegate?.albumCell(self, favouriteButtonPressedAt: indexPath)
         isFavourite = !isFavourite

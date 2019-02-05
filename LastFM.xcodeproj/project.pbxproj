@@ -24,7 +24,7 @@
 		DD96A17E220728860041136B /* AlbumDetailsTableViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD96A17D220728860041136B /* AlbumDetailsTableViewCoordinator.swift */; };
 		DD96A1802207323F0041136B /* TrackCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD96A17F2207323F0041136B /* TrackCell.swift */; };
 		DD96A183220770B90041136B /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD96A182220770B90041136B /* CoreDataManager.swift */; };
-		DD96A186220770EC0041136B /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DD96A184220770EC0041136B /* Model.xcdatamodeld */; };
+		DD96A186220770EC0041136B /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DD96A184220770EC0041136B /* DataModel.xcdatamodeld */; };
 		DDA3559E2205A67D0073C7BF /* AlbumsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA3559D2205A67D0073C7BF /* AlbumsCollectionViewController.swift */; };
 		DDA355A02205A6BD0073C7BF /* AlbumsCollectionViewInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA3559F2205A6BD0073C7BF /* AlbumsCollectionViewInteractor.swift */; };
 		DDA355A22205A6D30073C7BF /* AlbumsCollectionViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA355A12205A6D30073C7BF /* AlbumsCollectionViewCoordinator.swift */; };
@@ -214,7 +214,7 @@
 		DDA634A722034C430044823B /* LastFM */ = {
 			isa = PBXGroup;
 			children = (
-				DD96A184220770EC0041136B /* Model.xcdatamodeld */,
+				DD96A184220770EC0041136B /* DataModel.xcdatamodeld */,
 				DDA634A822034C430044823B /* AppDelegate.swift */,
 				DDA634BB22034D600044823B /* Info */,
 				DD6F190522046D4C003ADBC4 /* Extensions */,
@@ -434,7 +434,7 @@
 				DD09375F2205015800A767C8 /* UIImage+resizedImage.swift in Sources */,
 				DD96A183220770B90041136B /* CoreDataManager.swift in Sources */,
 				DDA634A922034C430044823B /* AppDelegate.swift in Sources */,
-				DD96A186220770EC0041136B /* Model.xcdatamodeld in Sources */,
+				DD96A186220770EC0041136B /* DataModel.xcdatamodeld in Sources */,
 				DD6F190C2204C8C1003ADBC4 /* ArtistCell.swift in Sources */,
 				DDA634D2220362410044823B /* MainCollectionViewInteractor.swift in Sources */,
 				DDA634D722036A880044823B /* SearchViewInteractor.swift in Sources */,
@@ -649,13 +649,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		DD96A184220770EC0041136B /* Model.xcdatamodeld */ = {
+		DD96A184220770EC0041136B /* DataModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				DD96A185220770EC0041136B /* Model.xcdatamodel */,
 			);
 			currentVersion = DD96A185220770EC0041136B /* Model.xcdatamodel */;
-			path = Model.xcdatamodeld;
+			path = DataModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

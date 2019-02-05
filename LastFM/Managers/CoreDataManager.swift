@@ -67,49 +67,24 @@ class CoreDataManager {
         }
     }
     
-    lazy var albumEntity = NSEntityDescription.entity(forEntityName: "AlbumCoreData",
+    lazy var albumEntity = NSEntityDescription.entity(forEntityName: "Album",
                                                  in: self.managedObjectContext)!
-    lazy var artistEntity = NSEntityDescription.entity(forEntityName: "ArtistCoreData",
+    lazy var artistEntity = NSEntityDescription.entity(forEntityName: "Artist",
                                                       in: self.managedObjectContext)!
-    lazy var trackEntity = NSEntityDescription.entity(forEntityName: "TrackCoreData",
+    lazy var trackEntity = NSEntityDescription.entity(forEntityName: "Track",
                                                       in: self.managedObjectContext)!
 }
 
 extension CoreDataManager {
     
-    func saveAlbumToFavourite(_ album: Album, imageData: Data? = nil, tracks: [Track]? = nil) {
-        let albumCoreData = AlbumCoreData(entity: albumEntity,
-                                          insertInto: managedObjectContext)
-        let artistCoreData = ArtistCoreData(entity: artistEntity,
-                                            insertInto: managedObjectContext)
-        
-        artistCoreData.name = album.artist.name
-        artistCoreData.url = album.artist.url
-        
-        albumCoreData.name = album.name
-        albumCoreData.artist = artistCoreData
-        albumCoreData.image = imageData
-        albumCoreData.imageUrl = album.imageUrl[.extralarge]
-        
-        if let tracks = tracks {
-            tracks.forEach {
-                let track = TrackCoreData(entity: trackEntity,
-                                          insertInto: managedObjectContext)
-                
-                track.name = $0.name
-                track.duration = Int16($0.duration)
-                albumCoreData.tracks?.adding(track)
-            }
-        }
-        
-        self.saveContext()
+    func saveAlbumToFavourite(_ album: Album) {
+        self.managedObjectContext.insert(album)
     }
     
     func albumIsExist(_ album: Album) -> Bool {
         let albums = self.loadAlbums()
-        
         for item in albums {
-            if item.name == album.name && item.artist?.name == album.artist.name {
+            if item.name == album.name && item.artist?.name == album.artist?.name {
                 return true
             }
         }
@@ -117,9 +92,9 @@ extension CoreDataManager {
         return false
     }
     
-    func loadAlbums() -> [AlbumCoreData] {
-        let fetchRequest = NSFetchRequest<AlbumCoreData>(entityName: "AlbumCoreData")
-        var fetchResult = [AlbumCoreData]()
+    func loadAlbums() -> [Album] {
+        let fetchRequest = NSFetchRequest<Album>(entityName: "Album")
+        var fetchResult = [Album]()
         do {
             fetchResult = try self.managedObjectContext.fetch(fetchRequest)
         } catch let error as NSError {
@@ -129,17 +104,17 @@ extension CoreDataManager {
     }
     
     func deleteAlbum(_ album: Album) {
-        let fetchRequest = NSFetchRequest<AlbumCoreData>(entityName: "AlbumCoreData")
-        var fetchResults = [AlbumCoreData]()
+        let fetchRequest = NSFetchRequest<Album>(entityName: "Album")
+        var fetchResults = [Album]()
         do {
             fetchResults = try managedObjectContext.fetch(fetchRequest)
             for result in fetchResults {
-                if result.name == album.name && result.artist?.name == album.artist.name {
+                if result.name == album.name && result.artist?.name == album.artist?.name {
                     managedObjectContext.delete(result)
                 }
             }
         } catch let error as NSError {
-            print("Delete route by ref in AlbumsCoreData error: \(error)")
+            print("Delete album error: \(error)")
         }
         self.saveContext()
     }

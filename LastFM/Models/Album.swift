@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-class AlbumsRoot: Codable {
+class AlbumsRoot: Decodable {
     
     enum ResultCodingKeys: String, CodingKey {
         case topalbums
@@ -45,20 +45,30 @@ class ImageUrl {
     }
 }
 
-class Album: Codable {
+@objc(Album)
+public class Album: NSManagedObject, Decodable {
     
    // let playcount: Int
-    let name: String
-    let artist: Artist
-    let url: String
+    @NSManaged var name: String?
+    @NSManaged var artist: Artist?
+    @NSManaged var imageUrl: String?
+    @NSManaged var image: NSData?
+    @NSManaged var tracks: NSSet?
+    var url: String?
     
-    private let images: [Image]
-    lazy var imageUrl: [ImageSize: String] = [
-        .small: images[0].url,
-        .medium: images[1].url,
-        .large: images[2].url,
-        .extralarge: images[3].url
-    ]
+    private var images: [Image]?
+    var imagesUrl: [ImageSize: String]? {
+        if let images = images {
+            return [
+                .small: images[0].url,
+                .medium: images[1].url,
+                .large: images[2].url,
+                .extralarge: images[3].url
+            ]
+        }
+        return nil
+        
+    }
     
     enum CodingKeys: String, CodingKey {
       //  case playcount
@@ -68,13 +78,26 @@ class Album: Codable {
         case images = "image"
     }
     
-//    init(from decoder: Decoder) throws {
-//        let container = try decoder.container(keyedBy: CodingKeys.self)
-//
-//        self.name = try container.decode(String.self, forKey: .name)
-//        self.mbid = try container.decode(String.self, forKey: .mbid)
-//        self.url = try container.decode(String.self, forKey: .url)
-//        //self.images = try container.decode([Image].self, forKey: .images)
-//        //self.artist = try container.decode(Artist.self, forKey: .artist)
-//    }
+    required convenience public init(from decoder: Decoder) throws {
+        self.init(entity: CoreDataManager.shared.albumEntity, insertInto: nil)
+        
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.name = try container.decode(String.self, forKey: .name)
+        self.url = try container.decode(String.self, forKey: .url)
+        self.images = try container.decode([Image].self, forKey: .images)
+        self.artist = try container.decode(Artist.self, forKey: .artist)
+    }
+    
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<Album> {
+        return NSFetchRequest<Album>(entityName: "Album")
+    }
+    
+    func addTracks(_ tracks: [Track]) {
+        self.tracks?.adding(tracks)
+    }
+    
+    func addImageData(_ imageData: Data) {
+        self.image = imageData as NSData
+    }
 }

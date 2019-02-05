@@ -7,8 +7,9 @@
 //
 
 import Foundation
+import CoreData
 
-class ArtistsRoot: Codable {
+class ArtistsRoot: Decodable {
     
     enum ResultCodingKeys: String, CodingKey {
         case results
@@ -35,12 +36,13 @@ class ArtistsRoot: Codable {
     }
 }
 
-class Artist: Codable {
+@objc(Artist)
+class Artist: NSManagedObject, Decodable {
     
-    let name: String
-    let url: String
+    @NSManaged var name: String
+    @NSManaged var url: String
     
-    private let images: [Image]?
+    private var images: [Image]?
     var imageUrl: [ImageSize: String]? {
         if let images = images {
             return [
@@ -61,13 +63,17 @@ class Artist: Codable {
         case images = "image"
     }
 
-//    required init(from decoder: Decoder) throws {
-//        let container = try decoder.container(keyedBy: CodingKeys.self)
-//
-//        self.listeners = Int(try container.decode(String.self, forKey: .listeners)) ?? 0
-//        self.name = try container.decode(String.self, forKey: .name)
-//        self.mbid = try container.decode(String.self, forKey: .mbid)
-//        self.url = try container.decode(String.self, forKey: .url)
-//        self.images = try container.decode([Image].self, forKey: .images)
-//    }
+    required convenience init(from decoder: Decoder) throws {
+        self.init(entity: CoreDataManager.shared.artistEntity, insertInto: nil)
+        
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.name = try container.decode(String.self, forKey: .name)
+        self.url = try container.decode(String.self, forKey: .url)
+        self.images = try container.decodeIfPresent([Image].self, forKey: .images)
+    }
+    
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<Artist> {
+        return NSFetchRequest<Artist>(entityName: "Artist")
+    }
 }

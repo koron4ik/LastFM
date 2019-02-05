@@ -87,7 +87,7 @@ class AlbumsCollectionViewController: UICollectionViewController {
             cell.isFavourite = true
         }
         
-        imageLoader.obtainImageWithPath(imagePath: album.imageUrl[.large] ?? "") { (image, _) in
+        imageLoader.obtainImageWithPath(imagePath: album.imagesUrl?[.large] ?? "") { (image, _) in
             //if let updateCell = collectionView.cellForItem(at: indexPath) as? AlbumCell {
                 cell.albumImageView.image = image
             //}

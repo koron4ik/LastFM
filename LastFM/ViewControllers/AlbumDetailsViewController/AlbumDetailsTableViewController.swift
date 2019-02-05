@@ -42,11 +42,12 @@ class AlbumDetailsTableViewController: UITableViewController {
         configureHeaderView()
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        NetworkManager.getTracks(albumName: interactor.album.name, artistName: interactor.album.artist.name) { [weak self] (result) in
+        NetworkManager.getTracks(albumName: interactor.album.name ?? "", artistName: interactor.album.artist?.name ?? "") { [weak self] (result) in
             switch result {
             case .success(let tracks):
                 guard let tracks = tracks else { return }
                 self?.tracks = tracks
+                self?.interactor.album.addTracks(tracks)
                 DispatchQueue.main.async {
                     UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     self?.tableView.reloadData()
@@ -69,13 +70,14 @@ class AlbumDetailsTableViewController: UITableViewController {
     
     private func configureHeaderView() {
         albumNameLabel.text = interactor.album.name
-        artistNameLabel.text = interactor.album.artist.name
+        artistNameLabel.text = interactor.album.artist?.name
         
-        guard let url = URL(string: interactor.album.imageUrl[.extralarge] ?? "") else { return }
+        guard let url = URL(string: interactor.album.imagesUrl?[.extralarge] ?? "") else { return }
         URLSession.shared.dataTask(with: url) { [weak self] (data, _, _) in
             guard let data = data, let image = UIImage(data: data) else { return }
             DispatchQueue.main.async {
                 self?.albumImageView.image = image
+                self?.interactor.album.addImageData(data)
             }
         }.resume()
         
@@ -88,7 +90,7 @@ class AlbumDetailsTableViewController: UITableViewController {
         if isFavourite {
             CoreDataManager.shared.deleteAlbum(interactor.album)
         } else {
-            CoreDataManager.shared.saveAlbumToFavourite(interactor.album, imageData: albumImageView.image?.pngData(), tracks: tracks)
+            CoreDataManager.shared.saveAlbumToFavourite(interactor.album)
         }
         isFavourite = !isFavourite
     }

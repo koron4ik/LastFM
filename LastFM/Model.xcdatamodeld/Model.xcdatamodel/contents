@@ -17,7 +17,7 @@
     </entity>
     <elements>
         <element name="AlbumCoreData" positionX="-63" positionY="-18" width="128" height="120"/>
-        <element name="TrackCoreData" positionX="-27" positionY="45" width="128" height="75"/>
         <element name="ArtistCoreData" positionX="0" positionY="63" width="128" height="75"/>
+        <element name="TrackCoreData" positionX="-27" positionY="45" width="128" height="75"/>
     </elements>
 </model>

@@ -19,19 +19,66 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="bbu-7w-lqu">
-                            <size key="itemSize" width="50" height="50"/>
+                            <size key="itemSize" width="172" height="210"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="AlbumCell" reuseIdentifier="AlbumCell" id="EqW-Nt-2l9">
-                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="AlbumCell" id="YA8-9p-rRu" customClass="FavouriteAlbumCell" customModule="LastFM" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="172" height="210"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="172" height="210"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="music_placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="7xD-IP-4a3">
+                                            <rect key="frame" x="0.0" y="0.0" width="172" height="164"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                    <integer key="value" value="10"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Ze-fI-jQS">
+                                            <rect key="frame" x="2" y="170" width="168" height="16"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="16" id="a7h-IF-iJh"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vjT-dE-shv" userLabel="Artist Name Label">
+                                            <rect key="frame" x="2" y="188" width="168" height="16"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="16" id="oMD-LB-cov"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </view>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="vjT-dE-shv" firstAttribute="top" secondItem="5Ze-fI-jQS" secondAttribute="bottom" constant="2" id="AAA-yE-iAC"/>
+                                    <constraint firstAttribute="trailing" secondItem="5Ze-fI-jQS" secondAttribute="trailing" constant="2" id="EQV-99-aha"/>
+                                    <constraint firstItem="5Ze-fI-jQS" firstAttribute="top" secondItem="7xD-IP-4a3" secondAttribute="bottom" constant="6" id="FbU-mO-gXo"/>
+                                    <constraint firstItem="vjT-dE-shv" firstAttribute="leading" secondItem="YA8-9p-rRu" secondAttribute="leading" constant="2" id="WhU-Hf-GMD"/>
+                                    <constraint firstItem="7xD-IP-4a3" firstAttribute="top" secondItem="YA8-9p-rRu" secondAttribute="top" id="aGp-Ip-dLr"/>
+                                    <constraint firstAttribute="trailing" secondItem="vjT-dE-shv" secondAttribute="trailing" constant="2" id="dRY-aM-PDi"/>
+                                    <constraint firstAttribute="trailing" secondItem="7xD-IP-4a3" secondAttribute="trailing" id="nx7-iY-H5i"/>
+                                    <constraint firstAttribute="bottom" secondItem="vjT-dE-shv" secondAttribute="bottom" constant="6" id="sCJ-hJ-ApU"/>
+                                    <constraint firstItem="7xD-IP-4a3" firstAttribute="leading" secondItem="YA8-9p-rRu" secondAttribute="leading" id="y25-W3-YZc"/>
+                                    <constraint firstItem="5Ze-fI-jQS" firstAttribute="leading" secondItem="YA8-9p-rRu" secondAttribute="leading" constant="2" id="zfY-3P-0HD"/>
+                                </constraints>
+                                <size key="customSize" width="172" height="210"/>
+                                <connections>
+                                    <outlet property="albumImageView" destination="7xD-IP-4a3" id="7cU-cY-crw"/>
+                                    <outlet property="albumNameLabel" destination="5Ze-fI-jQS" id="mfG-DY-MLA"/>
+                                    <outlet property="artistNameLabel" destination="vjT-dE-shv" id="rcn-bW-Ifo"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
@@ -50,7 +97,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IQX-UV-xcq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="415" y="26"/>
+            <point key="canvasLocation" x="413.60000000000002" y="25.637181409295355"/>
         </scene>
         <!--Search Artists-->
         <scene sceneID="e3h-JP-MF9">
@@ -63,7 +110,7 @@
                             <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="H6D-Lv-Acy">
                                 <rect key="frame" x="0.0" y="64" width="375" height="56"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <color key="barTintColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="barTintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="hCl-O3-tVh" id="F3J-oQ-xL7"/>
@@ -178,7 +225,7 @@
                                 <size key="customSize" width="172" height="200"/>
                                 <connections>
                                     <outlet property="albumImageView" destination="z4z-id-XMf" id="b9h-L6-9QD"/>
-                                    <outlet property="artistNameLabel" destination="hgw-2z-l06" id="01r-fk-82J"/>
+                                    <outlet property="albumNameLabel" destination="hgw-2z-l06" id="uN1-1g-lDf"/>
                                     <outlet property="favouriteAlbumButton" destination="uqb-kV-kiY" id="idC-m5-WNb"/>
                                 </connections>
                             </collectionViewCell>

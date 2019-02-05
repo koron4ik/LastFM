@@ -23,7 +23,8 @@ class MainCollectionViewController: UICollectionViewController {
     var interactor: MainCollectionViewInteractor!
     weak var coordinator: MainCollectionViewCoordinator?
     
-    private var albums: [Album] = []
+    private var albums: [AlbumCoreData] = []
+    private let imageLoader = ImageCacheLoader()
     private let reuseIdentifier = "AlbumCell"
     private let itemsPerRow: CGFloat = 2
     private let sectionInsets = UIEdgeInsets(top: 20.0,
@@ -34,6 +35,12 @@ class MainCollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        albums = CoreDataManager.shared.loadAlbums()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -57,15 +64,26 @@ class MainCollectionViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? AlbumCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? FavouriteAlbumCell else { return UICollectionViewCell() }
         
-        //let album = albums[indexPath.row]
+        let album = albums[indexPath.row]
+        
+        if let data = album.image {
+            cell.albumImageView.image = UIImage(data: data)
+        } else if let imagePath = album.imageUrl {
+            imageLoader.obtainImageWithPath(imagePath: imagePath) { (image, _) in
+                cell.albumImageView.image = image
+            }
+        }
+        
+        cell.albumNameLabel.text = album.name
+        cell.artistNameLabel.text = album.artistName
         
         return cell
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        coordinator?.showAlbumDetails(album: albums[indexPath.row])
+        //coordinator?.showAlbumDetails(album: albums[indexPath.row])
     }
 }
 
@@ -78,8 +96,9 @@ extension MainCollectionViewController: UICollectionViewDelegateFlowLayout {
         let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
         let availableWidth = view.frame.width - paddingSpace
         let widthPerItem = availableWidth / itemsPerRow
+        let heightPerItem = widthPerItem * 1.2
         
-        return CGSize(width: widthPerItem, height: widthPerItem)
+        return CGSize(width: widthPerItem, height: heightPerItem)
     }
     
     func collectionView(_ collectionView: UICollectionView,

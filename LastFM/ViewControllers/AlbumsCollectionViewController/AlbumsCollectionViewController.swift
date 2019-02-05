@@ -67,7 +67,7 @@ class AlbumsCollectionViewController: UICollectionViewController {
         
         cell.delegate = self
         cell.indexPath = indexPath
-        cell.artistNameLabel.text = album.name
+        cell.albumNameLabel.text = album.name
         imageLoader.obtainImageWithPath(imagePath: album.imageUrl[.large] ?? "") { (image, _) in
             if let updateCell = collectionView.cellForItem(at: indexPath) as? AlbumCell {
                 updateCell.albumImageView.image = image
@@ -136,8 +136,9 @@ extension AlbumsCollectionViewController: UICollectionViewDelegateFlowLayout {
         let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
         let availableWidth = view.frame.width - paddingSpace
         let widthPerItem = availableWidth / itemsPerRow
+        let heightPerItem = widthPerItem * 1.1
         
-        return CGSize(width: widthPerItem, height: widthPerItem)
+        return CGSize(width: widthPerItem, height: heightPerItem)
     }
     
     func collectionView(_ collectionView: UICollectionView,

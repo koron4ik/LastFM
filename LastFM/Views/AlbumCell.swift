@@ -23,7 +23,7 @@ class AlbumCell: UICollectionViewCell {
     var indexPath: IndexPath!
     var isFavourite: Bool = false {
         didSet {
-            let image = isFavourite ? UIImage(named: "favourite") : UIImage(named: "unfavourite")
+            let image = isFavourite ? UIImage(named: "favorite") : UIImage(named: "unfavorite")
             favouriteAlbumButton.setImage(image, for: .normal)
         }
     }

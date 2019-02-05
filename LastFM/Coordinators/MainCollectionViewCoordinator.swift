@@ -17,7 +17,7 @@ class MainCollectionViewCoordinator: Coordinator, MainCollectionViewControllerCo
     
     init(rootViewController: UINavigationController) {
         self.rootViewController = rootViewController
-        self.rootViewController.navigationBar.barTintColor = UIColor.orange
+        self.rootViewController.navigationBar.barTintColor = UIColor(displayP3Red: 222/255, green: 222/255, blue: 222/255, alpha: 1.0)
     }
     
     func start() {

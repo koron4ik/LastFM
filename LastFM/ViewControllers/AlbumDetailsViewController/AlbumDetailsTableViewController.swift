@@ -31,7 +31,7 @@ class AlbumDetailsTableViewController: UITableViewController {
     
     private var isFavourite = false {
         didSet {
-            let image = isFavourite ? UIImage(named: "favourite") : UIImage(named: "unfavourite")
+            let image = isFavourite ? UIImage(named: "favorite") : UIImage(named: "unfavorite")
             favouriteButton.setImage(image, for: .normal)
         }
     }

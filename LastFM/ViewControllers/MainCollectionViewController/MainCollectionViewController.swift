@@ -31,6 +31,14 @@ class MainCollectionViewController: UICollectionViewController {
                                              left: 20.0,
                                              bottom: 0.0,
                                              right: 20.0)
+    private var backgroundView: UIImageView {
+        let background = UIImageView()
+        background.contentMode = .scaleAspectFill
+        if albums.count == 0 {
+            background.image = UIImage(named: "main_view")
+        }
+        return background
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +50,7 @@ class MainCollectionViewController: UICollectionViewController {
         
         albums = CoreDataManager.shared.loadAlbums()
         collectionView.reloadData()
+        collectionView.backgroundView = backgroundView
     }
     
     override func viewWillDisappear(_ animated: Bool) {

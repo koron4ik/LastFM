@@ -28,14 +28,21 @@ class SearchViewController: UIViewController {
     private var textTimer: Timer?
     private var artists: [Artist] = []
     private var cellId = "ArtistCell"
-    private var imageLoader: ImageCacheLoader!
+    private var imageLoader: ImageCacheLoader = ImageCacheLoader()
+    private var backgroundView: UIImageView {
+        let background = UIImageView()
+        background.contentMode = .scaleAspectFill
+        background.image = UIImage(named: "search_view")
+        
+        return background
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.imageLoader = ImageCacheLoader()
-        
         tableView.tableFooterView = UIView(frame: .zero)
+        tableView.backgroundView = backgroundView
+        searchBar.barTintColor = UIColor(displayP3Red: 222/255, green: 222/255, blue: 222/255, alpha: 1.0)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -62,6 +69,9 @@ class SearchViewController: UIViewController {
                 DispatchQueue.main.async {
                     UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     self?.tableView.reloadData()
+                    if artists.count != 0 {
+                        self?.tableView.backgroundView = UIImageView()
+                    }
                 }
             case .failure(let error):
                 print(error)

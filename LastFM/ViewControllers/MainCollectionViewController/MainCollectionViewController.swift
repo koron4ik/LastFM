@@ -78,8 +78,8 @@ class MainCollectionViewController: UICollectionViewController {
         
         let album = albums[indexPath.row]
         
-        if let data = album.image {
-            cell.albumImageView.image = UIImage(data: data as Data)
+        if let data = album.image as Data? {
+            cell.albumImageView.image = UIImage(data: data)
         } else if let imagePath = album.imageUrl {
             imageLoader.obtainImageWithPath(imagePath: imagePath) { (image, _) in
                 cell.albumImageView.image = image

@@ -8,28 +8,48 @@
 
 import Foundation
 
-enum ImageSize: String, Codable {
-    case small
-    case medium
-    case large
-    case extralarge
-    case mega
-}
-
-class Image: Codable {
+class Images: Decodable {
+    var small: URL?
+    var medium: URL?
+    var large: URL?
+    var extralarge: URL?
+    var mega: URL?
     
-    let url: String
-    let size: ImageSize
+    enum Size: String, Codable {
+        case small
+        case medium
+        case large
+        case extralarge
+        case mega
+    }
     
-    enum CodingKeys: String, CodingKey {
-        case url = "#text"
-        case size
+    struct ImageDecodable: Decodable {
+        let text: String
+        let size: Size
+        
+        enum CodingKeys: String, CodingKey {
+            case text = "#text"
+            case size
+        }
     }
     
     required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        self.url = try container.decode(String.self, forKey: .url)
-        self.size = try container.decode(ImageSize.self, forKey: .size)
+        var unkeyedContainer = try decoder.unkeyedContainer()
+        while !unkeyedContainer.isAtEnd {
+            let image = try unkeyedContainer.decode(ImageDecodable.self)
+            let url = URL(string: image.text)
+            switch image.size {
+            case .small:
+                self.small = url
+            case .medium:
+                self.medium = url
+            case .large:
+                self.large = url
+            case .extralarge:
+                self.extralarge = url
+            case .mega:
+                self.mega = url
+            }
+        }
     }
 }

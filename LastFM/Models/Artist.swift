@@ -9,6 +9,10 @@
 import Foundation
 import CoreData
 
+extension Decodable {
+    var model: [Decodable] { return [] }
+}
+
 class ArtistsRoot: Decodable {
     
     enum ResultCodingKeys: String, CodingKey {
@@ -39,23 +43,11 @@ class ArtistsRoot: Decodable {
 @objc(Artist)
 class Artist: NSManagedObject, Decodable {
     
-    @NSManaged var name: String
-    @NSManaged var url: String
+    @NSManaged var name: String?
+    @NSManaged var url: String?
+    @NSManaged var album: Album?
     
-    private var images: [Image]?
-    var imageUrl: [ImageSize: String]? {
-        if let images = images {
-            return [
-                .small: images[0].url,
-                .medium: images[1].url,
-                .large: images[2].url,
-                .extralarge: images[3].url,
-                .mega: images[4].url
-            ]
-        }
-        return nil
-    
-    }
+    var images: Images?
 
     enum CodingKeys: String, CodingKey {
         case name
@@ -70,10 +62,14 @@ class Artist: NSManagedObject, Decodable {
 
         self.name = try container.decode(String.self, forKey: .name)
         self.url = try container.decode(String.self, forKey: .url)
-        self.images = try container.decodeIfPresent([Image].self, forKey: .images)
+        self.images = try container.decodeIfPresent(Images.self, forKey: .images)
     }
     
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Artist> {
         return NSFetchRequest<Artist>(entityName: "Artist")
+    }
+    
+    func addAlbum(_ album: Album) {
+        self.album = album
     }
 }

@@ -6,6 +6,9 @@
 //  Copyright © 2019 Vadim Koronchik. All rights reserved.
 //
 
+//apiKey = "3c0aeb61c94d1f9f8437c0667c5db6db"
+//sharedSecret = "38b24ab0f7db7781c628bd0ba308f8f7"
+
 import UIKit
 
 @UIApplicationMain
@@ -17,15 +20,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        LastFMAPIConfiguration.shared.provide(apiKey: Constants.apiKey)
-        
+        LastfmAPIConfiguration.shared.configure(apiKey: "3c0aeb61c94d1f9f8437c0667c5db6db")
+
         self.window = UIWindow(frame: UIScreen.main.bounds)
         if let window = window {
             appCoordinator = AppCoordinator(window: window)
             appCoordinator.start()
         }
         
-//        print(NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)[0])
+        print(NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)[0])
 
         return true
     }

@@ -40,6 +40,7 @@ class Track: NSManagedObject, Decodable {
     
     @NSManaged var name: String?
     @NSManaged var duration: NSNumber?
+    @NSManaged var album: Album?
     
     enum CodingKeys: String, CodingKey {
         case name
@@ -57,5 +58,9 @@ class Track: NSManagedObject, Decodable {
     
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Track> {
         return NSFetchRequest<Track>(entityName: "Track")
+    }
+    
+    func addAlbum(_ album: Album) {
+        self.album = album
     }
 }

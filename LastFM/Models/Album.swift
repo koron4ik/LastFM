@@ -29,21 +29,21 @@ class AlbumsRoot: Decodable {
     }
 }
 
-class ImageUrl {
-    let small: String?
-    let medium: String?
-    let large: String?
-    let extralarge: String?
-    let mega: String?
-    
-    init(images: [Image]) {
-        self.small = images[0].url
-        self.medium = images[1].url
-        self.large = images[2].url
-        self.extralarge = images[3].url
-        self.mega = images[4].url
-    }
-}
+//class ImageUrl {
+//    let small: String?
+//    let medium: String?
+//    let large: String?
+//    let extralarge: String?
+//    let mega: String?
+//    
+//    init(images: [Image2]) {
+//        self.small = images[0].url
+//        self.medium = images[1].url
+//        self.large = images[2].url
+//        self.extralarge = images[3].url
+//        self.mega = images[4].url
+//    }
+//}
 
 @objc(Album)
 public class Album: NSManagedObject, Decodable {
@@ -54,21 +54,9 @@ public class Album: NSManagedObject, Decodable {
     @NSManaged var imageUrl: String?
     @NSManaged var image: NSData?
     @NSManaged var tracks: NSSet?
-    var url: String?
     
-    private var images: [Image]?
-    var imagesUrl: [ImageSize: String]? {
-        if let images = images {
-            return [
-                .small: images[0].url,
-                .medium: images[1].url,
-                .large: images[2].url,
-                .extralarge: images[3].url
-            ]
-        }
-        return nil
-        
-    }
+    var url: String?
+    var images: Images?
     
     enum CodingKeys: String, CodingKey {
       //  case playcount
@@ -85,8 +73,9 @@ public class Album: NSManagedObject, Decodable {
 
         self.name = try container.decode(String.self, forKey: .name)
         self.url = try container.decode(String.self, forKey: .url)
-        self.images = try container.decode([Image].self, forKey: .images)
+        self.images = try container.decode(Images.self, forKey: .images)
         self.artist = try container.decode(Artist.self, forKey: .artist)
+        self.artist?.addAlbum(self)
     }
     
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Album> {
@@ -94,7 +83,17 @@ public class Album: NSManagedObject, Decodable {
     }
     
     func addTracks(_ tracks: [Track]) {
-        self.tracks?.adding(tracks)
+        if managedObjectContext != nil {
+            for track in tracks {
+                managedObjectContext?.insert(track)
+            }
+        }
+        
+        let tracksSet = self.mutableSetValue(forKey: "tracks")
+        tracksSet.setSet(Set(tracks))
+        for track in tracks {
+            track.addAlbum(self)
+        }
     }
     
     func addImageData(_ imageData: Data) {

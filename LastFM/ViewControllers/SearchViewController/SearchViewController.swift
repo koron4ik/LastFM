@@ -22,13 +22,6 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     
-    var interactor: SearchViewInteractor!
-    weak var coordinator: SearchViewCoordinator?
-    
-    private var textTimer: Timer?
-    private var artists: [Artist] = []
-    private var cellId = "ArtistCell"
-    private var imageLoader: ImageCacheLoader = ImageCacheLoader()
     private var backgroundView: UIImageView {
         let background = UIImageView()
         background.contentMode = .scaleAspectFill
@@ -36,6 +29,18 @@ class SearchViewController: UIViewController {
         
         return background
     }
+    
+    var interactor: SearchViewInteractor!
+    weak var coordinator: SearchViewCoordinator?
+    
+    private var textTimer: Timer?
+    private var artists: [Artist] = []
+    private var cellId = "ArtistCell"
+    private var imageLoader = ImageCacheLoader()
+    private var currentPage = 1
+    private let numberOfPages = 3
+    private var isLoading = false
+    private var searchText: String!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,26 +60,38 @@ class SearchViewController: UIViewController {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
     
-    @objc func loadResult(_ timer: Timer) {
+    @objc func search(_ timer: Timer) {
         guard let text = timer.userInfo as? String, text.count > 0 else {
             return
         }
         
+        searchText = text
+        currentPage = 0
+        artists.removeAll()
+        tableView.reloadData()
+        loadArtists()
+    }
+        
+    func loadArtists() {
+        currentPage += 1
+        isLoading = true
+        
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        NetworkManager.getArtists(with: text) { [weak self] result in
+        LastfmAPIClient.shared.getArtists(with: searchText, page: currentPage) { [weak self] result in
             switch result {
             case .success(let artists):
                 guard let artists = artists else { return }
-                self?.artists = artists
+                self?.artists.append(contentsOf: artists)
                 DispatchQueue.main.async {
                     UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     self?.tableView.reloadData()
-                    if artists.count != 0 {
+                    self?.isLoading = false
+                    if self?.artists.count != 0 {
                         self?.tableView.backgroundView = UIImageView()
                     }
                 }
             case .failure(let error):
-                print(error)
+                print(error.localizedDescription)
             }
         }
     }
@@ -99,7 +116,7 @@ extension SearchViewController: UISearchBarDelegate {
         }
         textTimer = Timer.scheduledTimer(timeInterval: 1.0,
                                          target: self,
-                                         selector: #selector(loadResult(_:)),
+                                         selector: #selector(search),
                                          userInfo: searchText,
                                          repeats: false)
     }
@@ -137,12 +154,16 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         cell.imageView?.layer.cornerRadius = 22
         cell.imageView?.clipsToBounds = true
 
-        imageLoader.obtainImageWithPath(imagePath: artist.imageUrl![.medium] ?? "") { (image, _) in
-           // if let updateCell = tableView.cellForRow(at: indexPath) {
-                cell.imageView?.image = image
-           // }
+        imageLoader.obtainImageWithPath(imagePath: artist.images?.medium?.absoluteString ?? "") { (image, _) in
+            cell.imageView?.image = image
         }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if currentPage < numberOfPages && indexPath.row == artists.count - 1 && !isLoading {
+            loadArtists()
+        }
     }
 }

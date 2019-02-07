@@ -25,6 +25,9 @@ class AlbumsCollectionViewController: UICollectionViewController {
     private var albums: [Album] = []
     private var imageLoader: ImageCacheLoader = ImageCacheLoader()
     private let reuseIdentifier = "AlbumCell"
+    private var currentPage = 1
+    private let numberOfPages = 3
+    private var isLoading = false
     private let itemsPerRow: CGFloat = 2
     private let sectionInsets = UIEdgeInsets(top: 20.0,
                                              left: 20.0,
@@ -33,27 +36,36 @@ class AlbumsCollectionViewController: UICollectionViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        NetworkManager.getTopAlbums(artistName: interactor.artist.name) { [weak self] (result) in
-            switch result {
-            case .success(let albums):
-                guard let albums = albums else { return }
-                self?.albums = albums
-                DispatchQueue.main.async {
-                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                    self?.collectionView.reloadData()
-                }
-            case .failure(let error):
-                print(error)
-            }
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        currentPage = 0
+        albums.removeAll()
         collectionView.reloadData()
+        loadAlbums()
+    }
+    
+    private func loadAlbums() {
+        currentPage += 1
+        isLoading = true
+        
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        LastfmAPIClient.shared.getTopAlbums(artistName: interactor.artist.name ?? "", page: currentPage) { [weak self] (result) in
+            switch result {
+            case .success(let albums):
+                guard let albums = albums else { return }
+                self?.albums.append(contentsOf: albums)
+                self?.isLoading = false
+                DispatchQueue.main.async {
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    self?.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -63,6 +75,7 @@ class AlbumsCollectionViewController: UICollectionViewController {
             coordinator?.dismiss()
         }
         
+        CoreDataManager.shared.saveContext()
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
     
@@ -87,10 +100,16 @@ class AlbumsCollectionViewController: UICollectionViewController {
             cell.isFavourite = true
         }
         
-        imageLoader.obtainImageWithPath(imagePath: album.imagesUrl?[.large] ?? "") { (image, _) in
-            //if let updateCell = collectionView.cellForItem(at: indexPath) as? AlbumCell {
-                cell.albumImageView.image = image
-            //}
+        if album.image == nil, let url = album.images?.large {
+            URLSession.shared.dataTask(with: url) { (data, _, _) in
+                guard let data = data, let image = UIImage(data: data) else { return }
+                album.addImageData(data)
+                DispatchQueue.main.async {
+                    cell.albumImageView.image = image
+                }
+            }.resume()
+        } else if let data = album.image as Data? {
+            cell.albumImageView.image = UIImage(data: data)
         }
     
         return cell
@@ -98,6 +117,12 @@ class AlbumsCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         coordinator?.showAlbumDetails(album: albums[indexPath.row])
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if currentPage < numberOfPages && indexPath.row == albums.count - 1 && !isLoading {
+            loadAlbums()
+        }
     }
 }
 

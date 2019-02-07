@@ -57,7 +57,7 @@ class CoreDataManager {
         return persistentStoreCoordinator
     }()
     
-    private func saveContext () {
+    func saveContext () {
         if managedObjectContext.hasChanges {
             do {
                 try managedObjectContext.save()
@@ -79,6 +79,18 @@ extension CoreDataManager {
     
     func saveAlbumToFavourite(_ album: Album) {
         self.managedObjectContext.insert(album)
+        
+        if let artist = album.artist {
+            self.managedObjectContext.insert(artist)
+        }
+                
+        for track in album.tracks! {
+            if let track = track as? Track {
+                self.managedObjectContext.insert(track)
+            }
+        }
+        
+        self.saveContext()
     }
     
     func albumIsExist(_ album: Album) -> Bool {

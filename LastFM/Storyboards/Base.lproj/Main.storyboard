@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="hac-6A-9XW">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1EO-hh-laJ">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -98,6 +98,60 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IQX-UV-xcq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="413.60000000000002" y="25.637181409295355"/>
+        </scene>
+        <!--Auth View Controller-->
+        <scene sceneID="9gQ-FM-QkI">
+            <objects>
+                <viewController storyboardIdentifier="AuthViewController" id="1EO-hh-laJ" customClass="AuthViewController" customModule="LastFM" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="gme-R5-Gxb">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N0C-Ad-Y8a">
+                                <rect key="frame" x="40" y="325.5" width="295" height="36"/>
+                                <color key="backgroundColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <state key="normal" title="LOGIN">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lastfm" translatesAutoresizingMaskIntoConstraints="NO" id="QJP-JT-SYr">
+                                <rect key="frame" x="60" y="148" width="255" height="127.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="QJP-JT-SYr" secondAttribute="height" multiplier="2:1" id="UYR-aN-rKQ"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1fi-TN-GIQ">
+                                <rect key="frame" x="40" y="381.5" width="295" height="30"/>
+                                <state key="normal" title="Don't have an account? Sign up.">
+                                    <color key="titleColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="e85-ow-0BV" firstAttribute="trailing" secondItem="1fi-TN-GIQ" secondAttribute="trailing" constant="40" id="4vM-NN-rOS"/>
+                            <constraint firstItem="1fi-TN-GIQ" firstAttribute="leading" secondItem="e85-ow-0BV" secondAttribute="leading" constant="40" id="GaB-7n-yZc"/>
+                            <constraint firstItem="N0C-Ad-Y8a" firstAttribute="centerY" secondItem="e85-ow-0BV" secondAttribute="centerY" id="IBT-OJ-ECZ"/>
+                            <constraint firstItem="N0C-Ad-Y8a" firstAttribute="leading" secondItem="e85-ow-0BV" secondAttribute="leading" constant="40" id="Rj2-VN-afo"/>
+                            <constraint firstItem="QJP-JT-SYr" firstAttribute="leading" secondItem="e85-ow-0BV" secondAttribute="leading" constant="60" id="WXK-cp-VZj"/>
+                            <constraint firstItem="QJP-JT-SYr" firstAttribute="centerX" secondItem="e85-ow-0BV" secondAttribute="centerX" id="cU6-MX-110"/>
+                            <constraint firstItem="e85-ow-0BV" firstAttribute="trailing" secondItem="QJP-JT-SYr" secondAttribute="trailing" constant="60" id="iQq-Eg-4ER"/>
+                            <constraint firstItem="N0C-Ad-Y8a" firstAttribute="top" secondItem="QJP-JT-SYr" secondAttribute="bottom" constant="50" id="kn7-iY-buJ"/>
+                            <constraint firstItem="1fi-TN-GIQ" firstAttribute="top" secondItem="N0C-Ad-Y8a" secondAttribute="bottom" constant="20" id="rNx-K8-3yD"/>
+                            <constraint firstItem="e85-ow-0BV" firstAttribute="trailing" secondItem="N0C-Ad-Y8a" secondAttribute="trailing" constant="40" id="vMt-kp-Lor"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="e85-ow-0BV"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="a1h-fd-Oi1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-386" y="26"/>
         </scene>
         <!--Search Artists-->
         <scene sceneID="e3h-JP-MF9">
@@ -368,6 +422,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="lastfm" width="618" height="333"/>
         <image name="music_placeholder" width="800" height="800"/>
         <image name="unfavorite" width="24" height="24"/>
     </resources>

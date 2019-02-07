@@ -26,7 +26,7 @@ class AppCoordinator: Coordinator {
         window?.rootViewController = self.rootViewController
         window?.makeKeyAndVisible()
         
-        showMainCollectionViewCoordinator()
+        showAuth()
     }
     
     func stop() {
@@ -34,12 +34,12 @@ class AppCoordinator: Coordinator {
         window?.makeKeyAndVisible()
     }
     
-    private func showMainCollectionViewCoordinator() {
-        let mainCollectionViewCoordinator = MainCollectionViewCoordinator(rootViewController: self.rootViewController)
+    func showAuth() {
+        let authViewCoordinator = AuthViewCoordinator(rootViewController: self.rootViewController)
         
-        self.add(childCoordinator: mainCollectionViewCoordinator)
-        mainCollectionViewCoordinator.delegate = self
-        mainCollectionViewCoordinator.start()
+        self.add(childCoordinator: authViewCoordinator)
+        authViewCoordinator.delegate = self
+        authViewCoordinator.start()
     }
 }
 

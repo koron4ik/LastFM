@@ -43,6 +43,9 @@
 		DDA634D5220369F90044823B /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA634D4220369F90044823B /* SearchViewController.swift */; };
 		DDA634D722036A880044823B /* SearchViewInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA634D622036A880044823B /* SearchViewInteractor.swift */; };
 		DDA634D922036AB90044823B /* SearchViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA634D822036AB90044823B /* SearchViewCoordinator.swift */; };
+		DDD05C14220C335700732CD2 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD05C13220C335700732CD2 /* AuthViewController.swift */; };
+		DDD05C17220C338400732CD2 /* AuthViewInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD05C16220C338400732CD2 /* AuthViewInteractor.swift */; };
+		DDD05C19220C33A100732CD2 /* AuthVIewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD05C18220C33A100732CD2 /* AuthVIewCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -85,6 +88,9 @@
 		DDA634D4220369F90044823B /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		DDA634D622036A880044823B /* SearchViewInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewInteractor.swift; sourceTree = "<group>"; };
 		DDA634D822036AB90044823B /* SearchViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewCoordinator.swift; sourceTree = "<group>"; };
+		DDD05C13220C335700732CD2 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
+		DDD05C16220C338400732CD2 /* AuthViewInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewInteractor.swift; sourceTree = "<group>"; };
+		DDD05C18220C33A100732CD2 /* AuthVIewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthVIewCoordinator.swift; sourceTree = "<group>"; };
 		E7CFAA99128BAFAA8F340095 /* Pods-LastFM.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LastFM.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LastFM/Pods-LastFM.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -250,6 +256,7 @@
 		DDA634BD22034D860044823B /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				DDD05C15220C335C00732CD2 /* AuthViewController */,
 				DD96A17822071B150041136B /* AlbumDetailsViewController */,
 				DDA3559C2205A6580073C7BF /* AlbumsCollectionViewController */,
 				DDA634C5220351B50044823B /* MainCollectionViewController */,
@@ -272,6 +279,7 @@
 			children = (
 				DDA634CB22035F500044823B /* Coordinator.swift */,
 				DDA634CD22035F5F0044823B /* AppCoordinator.swift */,
+				DDD05C18220C33A100732CD2 /* AuthVIewCoordinator.swift */,
 				DDA634CF220360320044823B /* MainCollectionViewCoordinator.swift */,
 				DDA634D822036AB90044823B /* SearchViewCoordinator.swift */,
 				DDA355A12205A6D30073C7BF /* AlbumsCollectionViewCoordinator.swift */,
@@ -296,6 +304,15 @@
 				DDA634D622036A880044823B /* SearchViewInteractor.swift */,
 			);
 			path = SearchViewController;
+			sourceTree = "<group>";
+		};
+		DDD05C15220C335C00732CD2 /* AuthViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DDD05C13220C335700732CD2 /* AuthViewController.swift */,
+				DDD05C16220C338400732CD2 /* AuthViewInteractor.swift */,
+			);
+			path = AuthViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -415,6 +432,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD96A1802207323F0041136B /* TrackCell.swift in Sources */,
+				DDD05C17220C338400732CD2 /* AuthViewInteractor.swift in Sources */,
 				DDA634CE22035F5F0044823B /* AppCoordinator.swift in Sources */,
 				DDA3559E2205A67D0073C7BF /* AlbumsCollectionViewController.swift in Sources */,
 				DDA634D0220360320044823B /* MainCollectionViewCoordinator.swift in Sources */,
@@ -436,9 +454,11 @@
 				DD929915220AE80900E054DA /* URLComponents+setQueryItems.swift in Sources */,
 				DD96A186220770EC0041136B /* DataModel.xcdatamodeld in Sources */,
 				DD6F190C2204C8C1003ADBC4 /* ArtistCell.swift in Sources */,
+				DDD05C14220C335700732CD2 /* AuthViewController.swift in Sources */,
 				DDA634D2220362410044823B /* MainCollectionViewInteractor.swift in Sources */,
 				DDA634D722036A880044823B /* SearchViewInteractor.swift in Sources */,
 				DDA634CC22035F500044823B /* Coordinator.swift in Sources */,
+				DDD05C19220C33A100732CD2 /* AuthVIewCoordinator.swift in Sources */,
 				DD517F662208AA620078C405 /* FavouriteAlbumCell.swift in Sources */,
 				DD96A17E220728860041136B /* AlbumDetailsTableViewCoordinator.swift in Sources */,
 				DDA634D922036AB90044823B /* SearchViewCoordinator.swift in Sources */,

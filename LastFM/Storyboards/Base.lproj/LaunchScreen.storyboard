@@ -24,10 +24,10 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="dI4-Ja-Toq" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="49S-8e-Jf3"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="dI4-Ja-Toq" secondAttribute="trailing" id="BMb-8K-R74"/>
+                            <constraint firstItem="dI4-Ja-Toq" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="49S-8e-Jf3"/>
+                            <constraint firstAttribute="trailing" secondItem="dI4-Ja-Toq" secondAttribute="trailing" id="BMb-8K-R74"/>
                             <constraint firstItem="dI4-Ja-Toq" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="EpU-CM-ylE"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="dI4-Ja-Toq" secondAttribute="bottom" id="Oao-Pm-0NI"/>
+                            <constraint firstAttribute="bottom" secondItem="dI4-Ja-Toq" secondAttribute="bottom" id="Oao-Pm-0NI"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -38,6 +38,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="launchscreen" width="180" height="315.89999389648438"/>
+        <image name="launchscreen" width="503" height="884"/>
     </resources>
 </document>

@@ -46,6 +46,9 @@
 		DDD05C14220C335700732CD2 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD05C13220C335700732CD2 /* AuthViewController.swift */; };
 		DDD05C17220C338400732CD2 /* AuthViewInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD05C16220C338400732CD2 /* AuthViewInteractor.swift */; };
 		DDD05C19220C33A100732CD2 /* AuthVIewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD05C18220C33A100732CD2 /* AuthVIewCoordinator.swift */; };
+		DDD05C20220C839700732CD2 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD05C1F220C839700732CD2 /* Session.swift */; };
+		DDD05C22220C84CE00732CD2 /* String+md5.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD05C21220C84CE00732CD2 /* String+md5.swift */; };
+		DDD05C26220C9E2600732CD2 /* LastfmAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD05C25220C9E2600732CD2 /* LastfmAuth.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -91,6 +94,9 @@
 		DDD05C13220C335700732CD2 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		DDD05C16220C338400732CD2 /* AuthViewInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewInteractor.swift; sourceTree = "<group>"; };
 		DDD05C18220C33A100732CD2 /* AuthVIewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthVIewCoordinator.swift; sourceTree = "<group>"; };
+		DDD05C1F220C839700732CD2 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		DDD05C21220C84CE00732CD2 /* String+md5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+md5.swift"; sourceTree = "<group>"; };
+		DDD05C25220C9E2600732CD2 /* LastfmAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastfmAuth.swift; sourceTree = "<group>"; };
 		E7CFAA99128BAFAA8F340095 /* Pods-LastFM.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LastFM.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LastFM/Pods-LastFM.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -128,6 +134,7 @@
 			children = (
 				DD6F18FC22045124003ADBC4 /* LastfmAPIClient.swift */,
 				DD09375C2204F9CF00A767C8 /* ImageCacheLoader.swift */,
+				DDD05C25220C9E2600732CD2 /* LastfmAuth.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -139,6 +146,7 @@
 				DD6F18FE22045260003ADBC4 /* Artist.swift */,
 				DDA355A72205B4FF0073C7BF /* Album.swift */,
 				DDA355A92205B7190073C7BF /* Image.swift */,
+				DDD05C1F220C839700732CD2 /* Session.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -157,6 +165,7 @@
 				DD6F190622046D73003ADBC4 /* Data+prettyPrintedJSONString.swift */,
 				DD09375E2205015800A767C8 /* UIImage+resizedImage.swift */,
 				DD929914220AE80900E054DA /* URLComponents+setQueryItems.swift */,
+				DDD05C21220C84CE00732CD2 /* String+md5.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -220,7 +229,6 @@
 		DDA634A722034C430044823B /* LastFM */ = {
 			isa = PBXGroup;
 			children = (
-				DD96A184220770EC0041136B /* DataModel.xcdatamodeld */,
 				DDA634A822034C430044823B /* AppDelegate.swift */,
 				DDA634BB22034D600044823B /* Info */,
 				DD6F190522046D4C003ADBC4 /* Extensions */,
@@ -239,6 +247,7 @@
 		DDA634BA22034D5C0044823B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DD96A184220770EC0041136B /* DataModel.xcdatamodeld */,
 				DDA634AF22034C430044823B /* Assets.xcassets */,
 			);
 			path = Resources;
@@ -257,10 +266,10 @@
 			isa = PBXGroup;
 			children = (
 				DDD05C15220C335C00732CD2 /* AuthViewController */,
-				DD96A17822071B150041136B /* AlbumDetailsViewController */,
-				DDA3559C2205A6580073C7BF /* AlbumsCollectionViewController */,
 				DDA634C5220351B50044823B /* MainCollectionViewController */,
+				DD96A17822071B150041136B /* AlbumDetailsViewController */,
 				DDA634D3220369CC0044823B /* SearchViewController */,
+				DDA3559C2205A6580073C7BF /* AlbumsCollectionViewController */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -440,6 +449,7 @@
 				DDA355A02205A6BD0073C7BF /* AlbumsCollectionViewInteractor.swift in Sources */,
 				DDA355A22205A6D30073C7BF /* AlbumsCollectionViewCoordinator.swift in Sources */,
 				DDA355A42205B2070073C7BF /* AlbumCell.swift in Sources */,
+				DDD05C22220C84CE00732CD2 /* String+md5.swift in Sources */,
 				DD96A17C220728750041136B /* AlbumDetailsTableViewInteractor.swift in Sources */,
 				DDA634C7220351E70044823B /* MainCollectionViewController.swift in Sources */,
 				DD92991F220B6BB100E054DA /* LoadingCell.swift in Sources */,
@@ -463,6 +473,8 @@
 				DD96A17E220728860041136B /* AlbumDetailsTableViewCoordinator.swift in Sources */,
 				DDA634D922036AB90044823B /* SearchViewCoordinator.swift in Sources */,
 				DD96A17A22071BFF0041136B /* AlbumDetailsTableViewController.swift in Sources */,
+				DDD05C20220C839700732CD2 /* Session.swift in Sources */,
+				DDD05C26220C9E2600732CD2 /* LastfmAuth.swift in Sources */,
 				DD6F18FB22044991003ADBC4 /* Track.swift in Sources */,
 				DDA355A82205B4FF0073C7BF /* Album.swift in Sources */,
 				DDA355AA2205B7190073C7BF /* Image.swift in Sources */,

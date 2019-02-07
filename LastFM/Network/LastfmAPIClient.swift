@@ -21,6 +21,7 @@ class LastfmAPIClient {
         case getArtists(artist: String, page: Int)
         case getAlbums(artist: String, page: Int)
         case getTracks(artist: String, album: String)
+        case getMobileSession(username: String, password: String, apiSig: String)
         
         var params: [String: String] {
             switch self {
@@ -36,6 +37,11 @@ class LastfmAPIClient {
                 return [APIParameterKey.method: APIMethods.Album.getInfo.rawValue,
                         APIParameterKey.artist: artist,
                         APIParameterKey.album: album]
+            case .getMobileSession(let username, let password, let apiSig):
+                return [APIParameterKey.method: APIMethods.Auth.getMobileSession.rawValue,
+                        APIParameterKey.username: username,
+                        APIParameterKey.password: password,
+                        APIParameterKey.apiSig: apiSig]
             }
         }
         
@@ -47,6 +53,9 @@ class LastfmAPIClient {
             enum Album: String {
                 case getInfo = "album.getinfo"
             }
+            enum Auth: String {
+                case getMobileSession = "auth.getmobilesession"
+            }
         }
     }
     
@@ -57,6 +66,9 @@ class LastfmAPIClient {
         static let album = "album"
         static let apiKey = "api_key"
         static let format = "format"
+        static let username = "username"
+        static let password = "password"
+        static let apiSig = "api_sig"
     }
     
     func createURLRequest(method: APIMethod) -> URLRequest? {
@@ -99,7 +111,7 @@ class LastfmAPIClient {
 extension LastfmAPIClient {
     
     func getArtists(with name: String, page: Int = 1, completion: @escaping (Result<[Artist]?>) -> Void) {
-        guard let request = LastfmAPIClient.shared.createURLRequest(method: .getArtists(artist: name, page: page)) else { return }
+        guard let request = createURLRequest(method: .getArtists(artist: name, page: page)) else { return }
         
         URLSession.shared.dataTask(with: request) { data, _, error in
             if let data = data {
@@ -118,7 +130,7 @@ extension LastfmAPIClient {
     }
     
     func getTopAlbums(artistName: String, page: Int = 1, completion: @escaping (Result<[Album]?>) -> Void) {
-        guard let request = LastfmAPIClient.shared.createURLRequest(method: .getAlbums(artist: artistName, page: page)) else { return }
+        guard let request = createURLRequest(method: .getAlbums(artist: artistName, page: page)) else { return }
         
         URLSession.shared.dataTask(with: request) { data, _, error in
             if let data = data {
@@ -137,7 +149,7 @@ extension LastfmAPIClient {
     }
     
     func getTracks(albumName: String, artistName: String, completion: @escaping (Result<[Track]?>) -> Void) {
-        guard let request = LastfmAPIClient.shared.createURLRequest(method: .getTracks(artist: artistName, album: albumName)) else { return }
+        guard let request = createURLRequest(method: .getTracks(artist: artistName, album: albumName)) else { return }
         
         URLSession.shared.dataTask(with: request) { data, _, error in
             if let data = data {
@@ -152,8 +164,49 @@ extension LastfmAPIClient {
             if let error = error {
                 completion(.failure(error))
             }
-            }.resume()
+        }.resume()
     }
+    
+    func getMobileSession(username: String, password: String, completion: @escaping (Result<Session?>) -> Void) {
+        
+        let apiSig = "\(APIParameterKey.apiKey)\(LastfmAPIConfiguration.shared.apiKey ?? "")method\(APIMethod.APIMethods.Auth.getMobileSession.rawValue)password\(password)username\(username)\(LastfmAPIConfiguration.shared.apiSecret ?? "")".md5()
+        
+        guard var request = createURLRequest(method: .getMobileSession(username: username, password: password, apiSig: apiSig)) else { return }
+        
+        request.httpMethod = "POST"
+        URLSession.shared.dataTask(with: request) { (data, _, error) in
+            if let data = data {
+                do {
+                    let session = try JSONDecoder().decode(Session.self, from: data)
+                    completion(.success(session))
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+            
+            if let error = error {
+                completion(.failure(error))
+            }
+        }.resume()
+    }
+    
+//    private func getToken(completion: @escaping (_ token: String) -> Void) {
+//        guard let url = URL(string: "http://ws.audioscrobbler.com/2.0/?method=auth.gettoken&api_key=\(LastfmAPIConfiguration.shared.apiKey!)&format=json") else {
+//            return
+//        }
+//        let request = URLRequest(url: url)
+//        URLSession.shared.dataTask(with: request) { (data, response, error) in
+//            if let data = data {
+//                do {
+//                    if let dict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+//                        if let accessToken = dict["token"] as? String {
+//                            completion(accessToken)
+//                        }
+//                    }
+//                } catch {}
+//            }
+//            }.resume()
+//    }
 }
 
 class LastfmAPIConfiguration {
@@ -163,8 +216,10 @@ class LastfmAPIConfiguration {
     private init() { }
     
     var apiKey: String?
+    var apiSecret: String?
     
-    func configure(apiKey: String) {
+    func configure(apiKey: String, apiSecret: String) {
         self.apiKey = apiKey
+        self.apiSecret = apiSecret
     }
 }

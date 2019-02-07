@@ -20,7 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        LastfmAPIConfiguration.shared.configure(apiKey: "3c0aeb61c94d1f9f8437c0667c5db6db")
+        LastfmAPIConfiguration.shared.configure(apiKey: "3c0aeb61c94d1f9f8437c0667c5db6db",
+                                                apiSecret: "38b24ab0f7db7781c628bd0ba308f8f7")
 
         self.window = UIWindow(frame: UIScreen.main.bounds)
         if let window = window {

@@ -65,6 +65,11 @@ class MainCollectionViewController: UICollectionViewController {
         coordinator?.showArtistsSearch()
     }
     
+    @IBAction func exitButtonPressed(_ sender: Any) {
+        self.coordinator?.stop()
+        LastfmAuth.auth.logout()
+    }
+    
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }

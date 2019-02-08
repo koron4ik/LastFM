@@ -103,13 +103,13 @@ class AlbumsCollectionViewController: UICollectionViewController {
         if album.image == nil, let url = album.images?.large {
             URLSession.shared.dataTask(with: url) { (data, _, _) in
                 guard let data = data, let image = UIImage(data: data) else { return }
-                album.addImageData(data)
+                album.addImage(image)
                 DispatchQueue.main.async {
                     cell.albumImageView.image = image
                 }
             }.resume()
-        } else if let data = album.image as Data? {
-            cell.albumImageView.image = UIImage(data: data)
+        } else if let image = album.image {
+            cell.albumImageView.image = image
         }
     
         return cell

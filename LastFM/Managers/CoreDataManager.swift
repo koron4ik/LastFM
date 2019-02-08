@@ -67,30 +67,60 @@ class CoreDataManager {
         }
     }
     
-    lazy var albumEntity = NSEntityDescription.entity(forEntityName: "Album",
-                                                 in: self.managedObjectContext)!
-    lazy var artistEntity = NSEntityDescription.entity(forEntityName: "Artist",
-                                                      in: self.managedObjectContext)!
-    lazy var trackEntity = NSEntityDescription.entity(forEntityName: "Track",
-                                                      in: self.managedObjectContext)!
+    func entityForName(_ name: String) -> NSEntityDescription {
+        return NSEntityDescription.entity(forEntityName: name, in: managedObjectContext)!
+    }
 }
 
 extension CoreDataManager {
     
     func saveAlbumToFavourite(_ album: Album) {
-        self.managedObjectContext.insert(album)
+        let albumCoreData = AlbumCoreData(entity: entityForName("AlbumCoreData"),
+                                          insertInto: managedObjectContext)
+        albumCoreData.name = album.name
+        albumCoreData.image = album.image?.pngData()
         
-        if let artist = album.artist {
-            self.managedObjectContext.insert(artist)
-        }
+        let albumImagesCoreData = ImagesCoreData(entity: entityForName("ImagesCoreData"),
+                                                 insertInto: managedObjectContext)
+        albumImagesCoreData.small = album.images?.small?.absoluteString
+        albumImagesCoreData.medium = album.images?.medium?.absoluteString
+        albumImagesCoreData.large = album.images?.large?.absoluteString
+        albumImagesCoreData.extralarge = album.images?.extralarge?.absoluteString
+        albumImagesCoreData.mega = album.images?.mega?.absoluteString
+        albumCoreData.images = albumImagesCoreData
+        
+        let artistCoreData = ArtistCoreData(entity: entityForName("ArtistCoreData"),
+                                            insertInto: managedObjectContext)
+        artistCoreData.name = album.artist?.name
+        artistCoreData.url = album.artist?.url
+    
+        let artistImagesCoreData = ImagesCoreData(entity: entityForName("ImagesCoreData"),
+                                                  insertInto: managedObjectContext)
+        artistImagesCoreData.small = album.images?.small?.absoluteString
+        artistImagesCoreData.medium = album.images?.medium?.absoluteString
+        artistImagesCoreData.large = album.images?.large?.absoluteString
+        artistImagesCoreData.extralarge = album.images?.extralarge?.absoluteString
+        artistImagesCoreData.mega = album.images?.mega?.absoluteString
+        artistCoreData.images = artistImagesCoreData
+        albumCoreData.artist = artistCoreData
+        
+        if let tracks = album.tracks {
+            for track in tracks {
+                let trackCoreData = TrackCoreData(entity: entityForName("TrackCoreData"),
+                                          insertInto: managedObjectContext)
                 
-        for track in album.tracks! {
-            if let track = track as? Track {
-                self.managedObjectContext.insert(track)
+                trackCoreData.name = track.name
+                trackCoreData.duration = Int16(track.duration ?? 0)
+                albumCoreData.addToTracks(trackCoreData)
             }
         }
         
         self.saveContext()
+    }
+    
+    func updateAlbum(_ album: Album) {
+        deleteAlbum(album)
+        saveAlbumToFavourite(album)
     }
     
     func albumIsExist(_ album: Album) -> Bool {
@@ -104,9 +134,9 @@ extension CoreDataManager {
         return false
     }
     
-    func loadAlbums() -> [Album] {
-        let fetchRequest = NSFetchRequest<Album>(entityName: "Album")
-        var fetchResult = [Album]()
+    func loadAlbums() -> [AlbumCoreData] {
+        let fetchRequest = NSFetchRequest<AlbumCoreData>(entityName: "AlbumCoreData")
+        var fetchResult = [AlbumCoreData]()
         do {
             fetchResult = try self.managedObjectContext.fetch(fetchRequest)
         } catch let error as NSError {
@@ -116,8 +146,8 @@ extension CoreDataManager {
     }
     
     func deleteAlbum(_ album: Album) {
-        let fetchRequest = NSFetchRequest<Album>(entityName: "Album")
-        var fetchResults = [Album]()
+        let fetchRequest = NSFetchRequest<AlbumCoreData>(entityName: "AlbumCoreData")
+        var fetchResults = [AlbumCoreData]()
         do {
             fetchResults = try managedObjectContext.fetch(fetchRequest)
             for result in fetchResults {

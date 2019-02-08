@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import CoreData
 
 extension Decodable {
     var model: [Decodable] { return [] }
@@ -40,13 +39,10 @@ class ArtistsRoot: Decodable {
     }
 }
 
-@objc(Artist)
-class Artist: NSManagedObject, Decodable {
+class Artist: Decodable {
     
-    @NSManaged var name: String?
-    @NSManaged var url: String?
-    @NSManaged var album: Album?
-    
+    var name: String?
+    var url: String?
     var images: Images?
 
     enum CodingKeys: String, CodingKey {
@@ -54,22 +50,21 @@ class Artist: NSManagedObject, Decodable {
         case url
         case images = "image"
     }
-
-    required convenience init(from decoder: Decoder) throws {
-        self.init(entity: CoreDataManager.shared.artistEntity, insertInto: nil)
+    
+    init?(artistCoreData: ArtistCoreData) {
+        self.name = artistCoreData.name
+        self.url = artistCoreData.url
         
+        if let images = artistCoreData.images {
+            self.images = Images(imageCoreData: images)
+        }
+    }
+
+    required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         self.name = try container.decode(String.self, forKey: .name)
         self.url = try container.decode(String.self, forKey: .url)
         self.images = try container.decodeIfPresent(Images.self, forKey: .images)
-    }
-    
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<Artist> {
-        return NSFetchRequest<Artist>(entityName: "Artist")
-    }
-    
-    func addAlbum(_ album: Album) {
-        self.album = album
     }
 }

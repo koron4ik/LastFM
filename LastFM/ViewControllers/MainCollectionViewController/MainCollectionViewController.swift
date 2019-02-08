@@ -23,7 +23,7 @@ class MainCollectionViewController: UICollectionViewController {
     var interactor: MainCollectionViewInteractor!
     weak var coordinator: MainCollectionViewCoordinator?
     
-    private var albums: [Album] = []
+    private var albums: [AlbumCoreData] = []
     private let imageLoader = ImageCacheLoader()
     private let reuseIdentifier = "AlbumCell"
     private let itemsPerRow: CGFloat = 2
@@ -85,7 +85,7 @@ class MainCollectionViewController: UICollectionViewController {
         
         if let data = album.image as Data? {
             cell.albumImageView.image = UIImage(data: data)
-        } else if let imagePath = album.imageUrl {
+        } else if let imagePath = album.images?.extralarge {
             imageLoader.obtainImageWithPath(imagePath: imagePath) { (image, _) in
                 cell.albumImageView.image = image
             }
@@ -98,7 +98,9 @@ class MainCollectionViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        coordinator?.showAlbumDetails(album: albums[indexPath.row])
+        if let album = Album(albumCoreData: albums[indexPath.row]) {
+            coordinator?.showAlbumDetails(album: album)
+        }
     }
 }
 

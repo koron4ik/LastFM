@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import CoreData
 
 class TracksRoot: Decodable {
     
@@ -35,32 +34,25 @@ class TracksRoot: Decodable {
     }
 }
 
-@objc(Track)
-class Track: NSManagedObject, Decodable {
+class Track: Decodable {
     
-    @NSManaged var name: String?
-    @NSManaged var duration: NSNumber?
-    @NSManaged var album: Album?
+    var name: String?
+    var duration: Int?
     
     enum CodingKeys: String, CodingKey {
         case name
         case duration
     }
     
-    required convenience init(from decoder: Decoder) throws {
-        self.init(entity: CoreDataManager.shared.trackEntity, insertInto: nil)
-        
+    init?(trackCoreData: TrackCoreData) {
+        self.name = trackCoreData.name
+        self.duration = Int(trackCoreData.duration)
+    }
+    
+    required init(from decoder: Decoder) throws {        
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         self.name = try container.decode(String.self, forKey: .name)
-        self.duration = Int(try container.decode(String.self, forKey: .duration))! as NSNumber
-    }
-    
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<Track> {
-        return NSFetchRequest<Track>(entityName: "Track")
-    }
-    
-    func addAlbum(_ album: Album) {
-        self.album = album
+        self.duration = Int(try container.decode(String.self, forKey: .duration))
     }
 }

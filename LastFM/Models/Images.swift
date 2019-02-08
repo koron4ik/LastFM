@@ -33,6 +33,14 @@ class Images: Decodable {
         }
     }
     
+    init?(imageCoreData: ImagesCoreData) {
+        self.small = URL(string: imageCoreData.small ?? "")
+        self.medium = URL(string: imageCoreData.medium ?? "")
+        self.large = URL(string: imageCoreData.large ?? "")
+        self.extralarge = URL(string: imageCoreData.extralarge ?? "")
+        self.large = URL(string: imageCoreData.mega ?? "")
+    }
+    
     required init(from decoder: Decoder) throws {
         var unkeyedContainer = try decoder.unkeyedContainer()
         while !unkeyedContainer.isAtEnd {

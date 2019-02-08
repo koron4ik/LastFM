@@ -43,10 +43,10 @@ class AlbumDetailsTableViewController: UITableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        if isMovingFromParent { coordinator?.dismiss() }
-        if isFavourite { CoreDataManager.shared.saveContext() }
-        
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        
+        if isFavourite { CoreDataManager.shared.updateAlbum(interactor.album) }
+        if isMovingFromParent { coordinator?.dismiss() }
     }
     
     private func configureHeaderView() {
@@ -55,14 +55,14 @@ class AlbumDetailsTableViewController: UITableViewController {
         
         isFavourite = CoreDataManager.shared.albumIsExist(interactor.album)
         
-        if let imageData = interactor.album.image as Data? {
-            self.albumImageView.image = UIImage(data: imageData)
+        if let image = interactor.album.image {
+            self.albumImageView.image = image
         } else if let url = interactor.album.images?.extralarge {
             URLSession.shared.dataTask(with: url) { [weak self] (data, _, _) in
                 guard let data = data, let image = UIImage(data: data) else { return }
                 DispatchQueue.main.async {
                     self?.albumImageView.image = image
-                    self?.interactor.album.addImageData(data)
+                    self?.interactor.album.addImage(image)
                 }
             }.resume()
         }
@@ -70,7 +70,7 @@ class AlbumDetailsTableViewController: UITableViewController {
     }
     
     private func configureTableView() {
-        if interactor.album.tracks?.allObjects.count ?? 0 != 0 {
+        if interactor.album.tracks?.count ?? 0 != 0 {
             self.tableView.reloadData()
         } else {
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
@@ -78,9 +78,9 @@ class AlbumDetailsTableViewController: UITableViewController {
                 switch result {
                 case .success(let tracks):
                     guard let tracks = tracks else { return }
-                    self?.interactor.album.addTracks(tracks)
                     DispatchQueue.main.async {
                         UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                        self?.interactor.album.addTracks(tracks)
                         self?.tableView.reloadData()
                     }
                 case .failure(let error):
@@ -104,13 +104,13 @@ class AlbumDetailsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return interactor.album.tracks?.allObjects.count ?? 0
+        return interactor.album.tracks?.count ?? 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "TrackCell", for: indexPath) as? TrackCell else { return UITableViewCell() }
         
-        if let tracks = interactor.album.tracks?.allObjects as? [Track] {
+        if let tracks = interactor.album.tracks {
             cell.trackNumberLabel.text = String(indexPath.row + 1)
             cell.trackTitleLabel.text = tracks[indexPath.row].name
         }

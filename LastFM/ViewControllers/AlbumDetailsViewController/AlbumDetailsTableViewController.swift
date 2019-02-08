@@ -18,6 +18,8 @@ protocol AlbumDetailsTableViewControllerCoordinator: class {
 
 class AlbumDetailsTableViewController: UITableViewController {
     
+    @IBOutlet weak var tableViewActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var imageActivityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var albumImageView: UIImageView!
     @IBOutlet weak var albumNameLabel: UILabel!
     @IBOutlet weak var artistNameLabel: UILabel!
@@ -25,6 +27,7 @@ class AlbumDetailsTableViewController: UITableViewController {
     
     var interactor: AlbumDetailsTableViewInteractor!
     weak var coordinator: AlbumDetailsTableViewCoordinator?
+    private var imageLoader = ImageCacheLoader()
         
     private var isFavourite = false {
         didSet {
@@ -58,15 +61,14 @@ class AlbumDetailsTableViewController: UITableViewController {
         if let image = interactor.album.image {
             self.albumImageView.image = image
         } else if let url = interactor.album.images?.extralarge {
-            URLSession.shared.dataTask(with: url) { [weak self] (data, _, _) in
-                guard let data = data, let image = UIImage(data: data) else { return }
-                DispatchQueue.main.async {
-                    self?.albumImageView.image = image
-                    self?.interactor.album.addImage(image)
-                }
-            }.resume()
+            self.imageActivityIndicator.startAnimating()
+            imageLoader.obtainImageWithPath(imagePath: url.absoluteString) { [weak self] (image, _) in
+                self?.imageActivityIndicator.stopAnimating()
+                guard let image = image else { return }
+                self?.albumImageView.image = image
+                self?.interactor.album.addImage(image)
+            }
         }
-        
     }
     
     private func configureTableView() {
@@ -74,17 +76,23 @@ class AlbumDetailsTableViewController: UITableViewController {
             self.tableView.reloadData()
         } else {
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
-            LastfmAPIClient.shared.getTracks(albumName: interactor.album.name ?? "", artistName: interactor.album.artist?.name ?? "") { [weak self] (result) in
+            tableViewActivityIndicator.startAnimating()
+            LastfmAPIClient.getTracks(albumName: interactor.album.name ?? "", artistName: interactor.album.artist?.name ?? "") { [weak self] (result) in
                 switch result {
                 case .success(let tracks):
-                    guard let tracks = tracks else { return }
-                    DispatchQueue.main.async {
-                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                        self?.interactor.album.addTracks(tracks)
-                        self?.tableView.reloadData()
+                    if let tracks = tracks {
+                        DispatchQueue.main.async {
+                            self?.interactor.album.addTracks(tracks)
+                            self?.tableView.reloadData()
+                        }
                     }
+                    
                 case .failure(let error):
                     print(error.localizedDescription)
+                }
+                DispatchQueue.main.async {
+                    self?.tableViewActivityIndicator.stopAnimating()
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 }
             }
         }

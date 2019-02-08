@@ -3,9 +3,9 @@
     <entity name="AlbumCoreData" representedClassName="AlbumCoreData" syncable="YES" codeGenerationType="class">
         <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="artist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ArtistCoreData" inverseName="album" inverseEntity="ArtistCoreData" syncable="YES"/>
-        <relationship name="images" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ImagesCoreData" inverseName="album" inverseEntity="ImagesCoreData" syncable="YES"/>
-        <relationship name="tracks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TrackCoreData" inverseName="album" inverseEntity="TrackCoreData" syncable="YES"/>
+        <relationship name="artist" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ArtistCoreData" inverseName="album" inverseEntity="ArtistCoreData" syncable="YES"/>
+        <relationship name="images" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ImagesCoreData" inverseName="album" inverseEntity="ImagesCoreData" syncable="YES"/>
+        <relationship name="tracks" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TrackCoreData" inverseName="album" inverseEntity="TrackCoreData" syncable="YES"/>
     </entity>
     <entity name="ArtistCoreData" representedClassName="ArtistCoreData" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -29,8 +29,8 @@
     </entity>
     <elements>
         <element name="AlbumCoreData" positionX="-188.796875" positionY="-147.98046875" width="128" height="118"/>
-        <element name="TrackCoreData" positionX="55.50390625" positionY="-65.2578125" width="128" height="90"/>
         <element name="ArtistCoreData" positionX="-407.6328125" positionY="29.67578125" width="128" height="103"/>
         <element name="ImagesCoreData" positionX="-165.44921875" positionY="67.2109375" width="128" height="148"/>
+        <element name="TrackCoreData" positionX="55.50390625" positionY="-65.2578125" width="128" height="90"/>
     </elements>
 </model>

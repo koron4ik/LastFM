@@ -53,10 +53,7 @@ class SearchViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        if isMovingFromParent {
-            coordinator?.dismiss()
-        }
-        
+        if isMovingFromParent { coordinator?.dismiss() }
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
     
@@ -77,13 +74,12 @@ class SearchViewController: UIViewController {
         isLoading = true
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        LastfmAPIClient.shared.getArtists(with: searchText, page: currentPage) { [weak self] result in
+        LastfmAPIClient.getArtists(with: searchText, page: currentPage) { [weak self] result in
             switch result {
             case .success(let artists):
                 guard let artists = artists else { return }
                 self?.artists.append(contentsOf: artists)
                 DispatchQueue.main.async {
-                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     self?.tableView.reloadData()
                     self?.isLoading = false
                     if self?.artists.count != 0 {
@@ -92,6 +88,9 @@ class SearchViewController: UIViewController {
                 }
             case .failure(let error):
                 print(error.localizedDescription)
+            }
+            DispatchQueue.main.async {
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
             }
         }
     }
@@ -145,17 +144,19 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
         
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? ArtistCell else { return UITableViewCell() }
+        
         let artist = artists[indexPath.row]
         
+        cell.indexPath = indexPath
         cell.textLabel?.text = artist.name
         cell.imageView?.image = UIImage(named: "placeholder")?.resizedImage(newSize: CGSize(width: 45,
                                                                                            height: 45))
-        cell.imageView?.layer.cornerRadius = 22
-        cell.imageView?.clipsToBounds = true
 
         imageLoader.obtainImageWithPath(imagePath: artist.images?.medium?.absoluteString ?? "") { (image, _) in
-            cell.imageView?.image = image
+            if let cell = tableView.cellForRow(at: indexPath) {
+                cell.imageView?.image = image
+            }
         }
         
         return cell

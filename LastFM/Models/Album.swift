@@ -78,7 +78,7 @@ class Album: Decodable {
         self.tracks = tracks
     }
     
-    func addImage(_ image: UIImage) {
+    func addImage(_ image: UIImage?) {
         self.image = image
     }
 }

@@ -71,16 +71,17 @@ class AuthViewController: UIViewController {
         LastfmAuth.auth.login(withUsername: username, password: password) { [weak self] (session, _) in
             if session != nil {
                 DispatchQueue.main.async {
+                    self?.view.isUserInteractionEnabled = true
                     self?.activityIndicator.stopAnimating()
                     self?.coordinator?.showMainScreen()
                 }
             } else {
                 DispatchQueue.main.async {
+                    self?.view.isUserInteractionEnabled = true
                     self?.activityIndicator.stopAnimating()
                     self?.showAlert()
                 }
             }
-            self?.view.isUserInteractionEnabled = true
         }
     }
     

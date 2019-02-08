@@ -56,9 +56,7 @@ class MainCollectionViewController: UICollectionViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        if isMovingFromParent {
-            coordinator?.dismiss()
-        }
+        if isMovingFromParent { coordinator?.dismiss() }
     }
     
     @IBAction func searchButtonPressed(_ sender: Any) {

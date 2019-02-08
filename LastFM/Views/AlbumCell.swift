@@ -16,6 +16,7 @@ class AlbumCell: UICollectionViewCell {
     
     weak var delegate: AlbumCellDelegate?
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var albumImageView: UIImageView!
     @IBOutlet weak var albumNameLabel: UILabel!
     @IBOutlet weak var favouriteAlbumButton: UIButton!

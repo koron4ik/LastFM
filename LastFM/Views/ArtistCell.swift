@@ -9,6 +9,8 @@
 import UIKit
 
 class ArtistCell: UITableViewCell {
+    
+    var indexPath: IndexPath!
 
     override func awakeFromNib() {
         super.awakeFromNib()

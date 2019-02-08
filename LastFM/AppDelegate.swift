@@ -6,9 +6,6 @@
 //  Copyright © 2019 Vadim Koronchik. All rights reserved.
 //
 
-//apiKey = "3c0aeb61c94d1f9f8437c0667c5db6db"
-//sharedSecret = "38b24ab0f7db7781c628bd0ba308f8f7"
-
 import UIKit
 
 @UIApplicationMain
@@ -28,8 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             appCoordinator = AppCoordinator(window: window)
             appCoordinator.start()
         }
-        
-        print(NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)[0])
 
         return true
     }

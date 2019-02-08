@@ -17,7 +17,7 @@ class LastfmAuth {
     var session: Session?
     
     func login(withUsername username: String, password: String, completion: @escaping (_ session: Session?, _ error: Error?) -> Void) {
-        LastfmAPIClient.shared.getMobileSession(username: username, password: password) { [weak self] (result) in
+        LastfmAPIClient.getMobileSession(username: username, password: password) { [weak self] (result) in
             switch result {
             case .success(let session):
                 guard let session = session else { return }
@@ -33,7 +33,7 @@ class LastfmAuth {
     func userIsExist(completion: @escaping (_ session: Session?) -> Void) {
         let userInfo = fetchUserInfo()
         if let username = userInfo.0, let password = userInfo.1 {
-            LastfmAPIClient.shared.getMobileSession(username: username, password: password) { [weak self] (result) in
+            LastfmAPIClient.getMobileSession(username: username, password: password) { [weak self] (result) in
                 switch result {
                 case .success(let session):
                     guard let session = session else { return }

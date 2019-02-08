@@ -52,18 +52,20 @@ class AlbumsCollectionViewController: UICollectionViewController {
         isLoading = true
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        LastfmAPIClient.shared.getTopAlbums(artistName: interactor.artist.name ?? "", page: currentPage) { [weak self] (result) in
+        LastfmAPIClient.getTopAlbums(artistName: interactor.artist.name ?? "", page: currentPage) { [weak self] (result) in
             switch result {
             case .success(let albums):
                 guard let albums = albums else { return }
                 self?.albums.append(contentsOf: albums)
                 self?.isLoading = false
                 DispatchQueue.main.async {
-                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     self?.collectionView.reloadData()
                 }
             case .failure(let error):
                 print(error.localizedDescription)
+            }
+            DispatchQueue.main.async {
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
             }
         }
     }
@@ -71,11 +73,7 @@ class AlbumsCollectionViewController: UICollectionViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        if isMovingFromParent {
-            coordinator?.dismiss()
-        }
-        
-        CoreDataManager.shared.saveContext()
+        if isMovingFromParent { coordinator?.dismiss() }
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
     
@@ -101,13 +99,15 @@ class AlbumsCollectionViewController: UICollectionViewController {
         }
         
         if album.image == nil, let url = album.images?.large {
-            URLSession.shared.dataTask(with: url) { (data, _, _) in
-                guard let data = data, let image = UIImage(data: data) else { return }
-                album.addImage(image)
-                DispatchQueue.main.async {
+            cell.activityIndicator.startAnimating()
+            imageLoader.obtainImageWithPath(imagePath: url.absoluteString) { (image, _) in
+                if let cell = collectionView.cellForItem(at: indexPath) as? AlbumCell {
                     cell.albumImageView.image = image
+                    cell.activityIndicator.stopAnimating()
+                    collectionView.reloadItems(at: [indexPath])
                 }
-            }.resume()
+                album.addImage(image)
+            }
         } else if let image = album.image {
             cell.albumImageView.image = image
         }

@@ -57,7 +57,9 @@ class CoreDataManager {
         return persistentStoreCoordinator
     }()
     
-    func saveContext () {
+    private init() {}
+    
+    private func saveContext () {
         if managedObjectContext.hasChanges {
             do {
                 try managedObjectContext.save()
@@ -161,3 +163,5 @@ extension CoreDataManager {
         self.saveContext()
     }
 }
+
+//print(NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)[0])

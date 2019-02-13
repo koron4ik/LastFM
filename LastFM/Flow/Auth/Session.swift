@@ -29,4 +29,5 @@ class Session: Decodable {
         self.name = try container.decode(String.self, forKey: .name)
         self.key = try container.decode(String.self, forKey: .key)
     }
+    
 }

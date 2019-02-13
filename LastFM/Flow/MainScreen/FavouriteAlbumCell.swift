@@ -13,4 +13,5 @@ class FavouriteAlbumCell: UICollectionViewCell {
     @IBOutlet weak var albumImageView: UIImageView!
     @IBOutlet weak var albumNameLabel: UILabel!
     @IBOutlet weak var artistNameLabel: UILabel!
+    
 }

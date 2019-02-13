@@ -12,7 +12,13 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var appCoordinator: AppCoordinator!
+    
+    private lazy var presentedViewController: UIViewController = {
+        if let viewController = UIStoryboard(name: "Auth", bundle: nil).instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController {
+            return viewController
+        }
+        return UIViewController()
+    }()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -20,12 +26,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         LastfmAPIConfiguration.shared.configure(apiKey: "3c0aeb61c94d1f9f8437c0667c5db6db",
                                                 apiSecret: "38b24ab0f7db7781c628bd0ba308f8f7")
 
-        self.window = UIWindow(frame: UIScreen.main.bounds)
-        if let window = window {
-            appCoordinator = AppCoordinator(window: window)
-            appCoordinator.start()
-        }
-
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.rootViewController = UINavigationController(rootViewController: presentedViewController)
+        window?.makeKeyAndVisible()
+    
         return true
     }
 

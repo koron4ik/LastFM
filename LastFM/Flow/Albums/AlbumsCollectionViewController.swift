@@ -8,34 +8,20 @@
 
 import UIKit
 
-protocol AlbumsCollectionViewControllerIntercator: class {
-    var artist: Artist { get }
-}
-
-protocol AlbumsCollectionViewControllerCoordinator: class {
-    func showAlbumDetails(album: Album)
-    func dismiss()
-}
-
 class AlbumsCollectionViewController: UICollectionViewController {
     
-    var interactor: AlbumsCollectionViewInteractor!
-    weak var coordinator: AlbumsCollectionViewCoordinator?
-    
+    var artist: Artist!
     private var albums: [Album] = []
-    private var imageLoader: ImageCacheLoader = ImageCacheLoader()
+    private var imageLoader = ImageCacheLoader()
     private let reuseIdentifier = "AlbumCell"
     private var currentPage = 1
     private let numberOfPages = 3
     private var isLoading = false
-    private let itemsPerRow: CGFloat = 2
-    private let sectionInsets = UIEdgeInsets(top: 20.0,
-                                             left: 20.0,
-                                             bottom: 0.0,
-                                             right: 20.0)
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.collectionView.collectionViewLayout = AlbumsColletionViewFlowLayout(frame: view.frame, itemsPerRow: 2)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,7 +38,7 @@ class AlbumsCollectionViewController: UICollectionViewController {
         isLoading = true
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        LastfmAPIClient.getTopAlbums(artistName: interactor.artist.name ?? "", page: currentPage) { [weak self] (result) in
+        LastfmAPIClient.getTopAlbums(artistName: artist.name ?? "", page: currentPage) { [weak self] (result) in
             switch result {
             case .success(let albums):
                 guard let albums = albums else { return }
@@ -73,18 +59,41 @@ class AlbumsCollectionViewController: UICollectionViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        if isMovingFromParent { coordinator?.dismiss() }
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "albumDetails",
+            let cell = sender as? AlbumCell,
+            let index = collectionView.indexPath(for: cell)?.row,
+            let viewController = segue.destination as? AlbumDetailsTableViewController {
+            
+            viewController.album = albums[index]
+        }
+    }
+}
+
+// MARK: UICollectionViewDelegate
+extension AlbumsCollectionViewController {
+    
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if currentPage < numberOfPages && indexPath.row == albums.count - 1 && !isLoading {
+            loadAlbums()
+        }
+    }
+}
+
+// MARK: UICollectionViewDataSource
+extension AlbumsCollectionViewController {
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return albums.count
     }
-
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? AlbumCell else { return UICollectionViewCell() }
         
@@ -111,18 +120,8 @@ class AlbumsCollectionViewController: UICollectionViewController {
         } else if let image = album.image {
             cell.albumImageView.image = image
         }
-    
+        
         return cell
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        coordinator?.showAlbumDetails(album: albums[indexPath.row])
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if currentPage < numberOfPages && indexPath.row == albums.count - 1 && !isLoading {
-            loadAlbums()
-        }
     }
 }
 
@@ -134,32 +133,5 @@ extension AlbumsCollectionViewController: AlbumCellDelegate {
         } else {
             CoreDataManager.shared.saveAlbumToFavourite(albums[indexPath.row])
         }
-    }
-}
-
-extension AlbumsCollectionViewController: UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
-        let availableWidth = view.frame.width - paddingSpace
-        let widthPerItem = availableWidth / itemsPerRow
-        let heightPerItem = widthPerItem * 1.1
-        
-        return CGSize(width: widthPerItem, height: heightPerItem)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        insetForSectionAt section: Int) -> UIEdgeInsets {
-        return sectionInsets
-    }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return sectionInsets.left
     }
 }

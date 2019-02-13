@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1M1-AA-05I">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--AlbumDetails-->
+        <scene sceneID="VBz-fT-95G">
+            <objects>
+                <viewControllerPlaceholder storyboardName="AlbumDetails" id="WfI-rw-GYh" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4Gh-dZ-F7t" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="970" y="21"/>
+        </scene>
+        <!--Albums-->
+        <scene sceneID="OHR-Kt-1pm">
+            <objects>
+                <collectionViewController storyboardIdentifier="MainCollectionViewController" id="1M1-AA-05I" customClass="MainCollectionViewController" customModule="LastFM" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" dataMode="prototypes" id="z4j-K7-q6x">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="aNV-22-hrA">
+                            <size key="itemSize" width="172" height="210"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="AlbumCell" id="MIT-dr-5LP" customClass="FavouriteAlbumCell" customModule="LastFM" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="172" height="210"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                    <rect key="frame" x="0.0" y="0.0" width="172" height="210"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="music_placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="uF2-31-JKh">
+                                            <rect key="frame" x="0.0" y="0.0" width="172" height="164"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                    <integer key="value" value="10"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tst-FR-SeT">
+                                            <rect key="frame" x="2" y="170" width="168" height="16"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="16" id="p4F-Fv-8pF"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QiA-Rv-3r3" userLabel="Artist Name Label">
+                                            <rect key="frame" x="2" y="188" width="168" height="16"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="16" id="aey-KH-KNj"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </view>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="QiA-Rv-3r3" firstAttribute="leading" secondItem="MIT-dr-5LP" secondAttribute="leading" constant="2" id="1Q5-ZT-iL7"/>
+                                    <constraint firstItem="QiA-Rv-3r3" firstAttribute="top" secondItem="tst-FR-SeT" secondAttribute="bottom" constant="2" id="32S-6U-mUN"/>
+                                    <constraint firstAttribute="trailing" secondItem="tst-FR-SeT" secondAttribute="trailing" constant="2" id="74H-X5-HuW"/>
+                                    <constraint firstAttribute="bottom" secondItem="QiA-Rv-3r3" secondAttribute="bottom" constant="6" id="8T9-UL-Kmd"/>
+                                    <constraint firstItem="uF2-31-JKh" firstAttribute="leading" secondItem="MIT-dr-5LP" secondAttribute="leading" id="Efm-IG-eik"/>
+                                    <constraint firstItem="uF2-31-JKh" firstAttribute="top" secondItem="MIT-dr-5LP" secondAttribute="top" id="HS6-Sv-CKY"/>
+                                    <constraint firstAttribute="trailing" secondItem="uF2-31-JKh" secondAttribute="trailing" id="VCs-Pv-pDF"/>
+                                    <constraint firstItem="tst-FR-SeT" firstAttribute="leading" secondItem="MIT-dr-5LP" secondAttribute="leading" constant="2" id="dVN-Ji-I9l"/>
+                                    <constraint firstItem="tst-FR-SeT" firstAttribute="top" secondItem="uF2-31-JKh" secondAttribute="bottom" constant="6" id="k7p-WS-eNn"/>
+                                    <constraint firstAttribute="trailing" secondItem="QiA-Rv-3r3" secondAttribute="trailing" constant="2" id="xD8-U8-Ouc"/>
+                                </constraints>
+                                <size key="customSize" width="172" height="210"/>
+                                <connections>
+                                    <outlet property="albumImageView" destination="uF2-31-JKh" id="Hb8-hJ-QCB"/>
+                                    <outlet property="albumNameLabel" destination="tst-FR-SeT" id="Cz7-Zd-ex0"/>
+                                    <outlet property="artistNameLabel" destination="QiA-Rv-3r3" id="qwg-fM-jrJ"/>
+                                    <segue destination="WfI-rw-GYh" kind="show" identifier="albumDetails" id="oLF-f8-IVH"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="1M1-AA-05I" id="cag-oD-hqS"/>
+                            <outlet property="delegate" destination="1M1-AA-05I" id="mbg-YI-B1V"/>
+                        </connections>
+                    </collectionView>
+                    <navigationItem key="navigationItem" title="Albums" id="Il4-jL-a86">
+                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="VD4-nN-4gO">
+                            <connections>
+                                <segue destination="Ccb-tt-7Ph" kind="show" identifier="search" id="iYa-Vr-Tnm"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kNt-Lp-iYS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="380" y="45"/>
+        </scene>
+        <!--Search-->
+        <scene sceneID="UmQ-lh-EgJ">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Search" id="Ccb-tt-7Ph" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1e5-WQ-9UW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="938" y="67"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="music_placeholder" width="800" height="800"/>
+    </resources>
+</document>

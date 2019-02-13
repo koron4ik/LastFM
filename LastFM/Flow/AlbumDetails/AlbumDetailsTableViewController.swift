@@ -8,27 +8,19 @@
 
 import UIKit
 
-protocol AlbumDetailsTableViewControllerInteractor: class {
-    var album: Album { get }
-}
-
-protocol AlbumDetailsTableViewControllerCoordinator: class {
-    func dismiss()
-}
-
 class AlbumDetailsTableViewController: UITableViewController {
     
     @IBOutlet weak var tableViewActivityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var imageActivityIndicator: UIActivityIndicatorView!
+    
     @IBOutlet weak var albumImageView: UIImageView!
     @IBOutlet weak var albumNameLabel: UILabel!
     @IBOutlet weak var artistNameLabel: UILabel!
     @IBOutlet weak var favouriteButton: UIButton!
-    
-    var interactor: AlbumDetailsTableViewInteractor!
-    weak var coordinator: AlbumDetailsTableViewCoordinator?
+
+    var album: Album!
     private var imageLoader = ImageCacheLoader()
-        
+
     private var isFavourite = false {
         didSet {
             let image = isFavourite ? UIImage(named: "favorite") : UIImage(named: "unfavorite")
@@ -48,41 +40,42 @@ class AlbumDetailsTableViewController: UITableViewController {
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
-        if isFavourite { CoreDataManager.shared.updateAlbum(interactor.album) }
-        if isMovingFromParent { coordinator?.dismiss() }
+        if isFavourite {
+            CoreDataManager.shared.updateAlbum(album)
+        }
     }
     
     private func configureHeaderView() {
-        albumNameLabel.text = interactor.album.name
-        artistNameLabel.text = interactor.album.artist?.name
+        albumNameLabel.text = album.name
+        artistNameLabel.text = album.artist?.name
         
-        isFavourite = CoreDataManager.shared.albumIsExist(interactor.album)
+        isFavourite = CoreDataManager.shared.albumIsExist(album)
         
-        if let image = interactor.album.image {
+        if let image = album.image {
             self.albumImageView.image = image
-        } else if let url = interactor.album.images?.extralarge {
+        } else if let url = album.images?.extralarge {
             self.imageActivityIndicator.startAnimating()
             imageLoader.obtainImageWithPath(imagePath: url.absoluteString) { [weak self] (image, _) in
                 self?.imageActivityIndicator.stopAnimating()
                 guard let image = image else { return }
                 self?.albumImageView.image = image
-                self?.interactor.album.addImage(image)
+                self?.album.addImage(image)
             }
         }
     }
     
     private func configureTableView() {
-        if interactor.album.tracks?.count ?? 0 != 0 {
+        if album.tracks?.count ?? 0 != 0 {
             self.tableView.reloadData()
         } else {
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
             tableViewActivityIndicator.startAnimating()
-            LastfmAPIClient.getTracks(albumName: interactor.album.name ?? "", artistName: interactor.album.artist?.name ?? "") { [weak self] (result) in
+            LastfmAPIClient.getTracks(albumName: album.name ?? "", artistName: album.artist?.name ?? "") { [weak self] (result) in
                 switch result {
                 case .success(let tracks):
                     if let tracks = tracks {
                         DispatchQueue.main.async {
-                            self?.interactor.album.addTracks(tracks)
+                            self?.album.addTracks(tracks)
                             self?.tableView.reloadData()
                         }
                     }
@@ -100,29 +93,35 @@ class AlbumDetailsTableViewController: UITableViewController {
     
     @IBAction func favouriteButtonPressed(_ sender: Any) {
         if isFavourite {
-            CoreDataManager.shared.deleteAlbum(interactor.album)
+            CoreDataManager.shared.deleteAlbum(album)
         } else {
-            CoreDataManager.shared.saveAlbumToFavourite(interactor.album)
+            CoreDataManager.shared.saveAlbumToFavourite(album)
         }
         isFavourite = !isFavourite
     }
+    
+}
+
+// MARK: UITableViewDataSource
+extension AlbumDetailsTableViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return interactor.album.tracks?.count ?? 0
+        return album.tracks?.count ?? 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "TrackCell", for: indexPath) as? TrackCell else { return UITableViewCell() }
         
-        if let tracks = interactor.album.tracks {
+        if let tracks = album.tracks {
             cell.trackNumberLabel.text = String(indexPath.row + 1)
             cell.trackTitleLabel.text = tracks[indexPath.row].name
         }
         
         return cell
     }
+    
 }

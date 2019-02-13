@@ -8,15 +8,6 @@
 
 import UIKit
 
-protocol SearchViewControllerInteractor: class {
-    
-}
-
-protocol SearchViewControllerCoordinator: class {
-    func showAlbums(artist: Artist)
-    func dismiss()
-}
-
 class SearchViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
@@ -29,10 +20,7 @@ class SearchViewController: UIViewController {
         
         return background
     }
-    
-    var interactor: SearchViewInteractor!
-    weak var coordinator: SearchViewCoordinator?
-    
+        
     private var textTimer: Timer?
     private var artists: [Artist] = []
     private var cellId = "ArtistCell"
@@ -53,7 +41,6 @@ class SearchViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        if isMovingFromParent { coordinator?.dismiss() }
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
     
@@ -101,6 +88,16 @@ class SearchViewController: UIViewController {
         searchBar.resignFirstResponder()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "albums",
+            let cell = sender as? UITableViewCell,
+            let index = tableView.indexPath(for: cell)?.row,
+            let viewController = segue.destination as? AlbumsCollectionViewController {
+            
+            viewController.artist = artists[index]
+        }
+    }
+    
     deinit {
         textTimer?.invalidate()
     }
@@ -125,7 +122,21 @@ extension SearchViewController: UISearchBarDelegate {
     }
 }
 
-extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
+extension SearchViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 55
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if currentPage < numberOfPages && indexPath.row == artists.count - 1 && !isLoading {
+            loadArtists()
+        }
+    }
+
+}
+
+extension SearchViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -135,24 +146,15 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         return artists.count
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 55
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        coordinator?.showAlbums(artist: artists[indexPath.row])
-    }
-        
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? ArtistCell else { return UITableViewCell() }
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         
         let artist = artists[indexPath.row]
         
-        cell.indexPath = indexPath
         cell.textLabel?.text = artist.name
         cell.imageView?.image = UIImage(named: "placeholder")?.resizedImage(newSize: CGSize(width: 45,
-                                                                                           height: 45))
-
+                                                                                            height: 45))
+        
         imageLoader.obtainImageWithPath(imagePath: artist.images?.medium?.absoluteString ?? "") { (image, _) in
             if let cell = tableView.cellForRow(at: indexPath) {
                 cell.imageView?.image = image
@@ -160,11 +162,5 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if currentPage < numberOfPages && indexPath.row == artists.count - 1 && !isLoading {
-            loadArtists()
-        }
     }
 }

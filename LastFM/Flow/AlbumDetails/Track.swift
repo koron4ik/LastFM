@@ -55,4 +55,5 @@ class Track: Decodable {
         self.name = try container.decode(String.self, forKey: .name)
         self.duration = Int(try container.decode(String.self, forKey: .duration))
     }
+    
 }

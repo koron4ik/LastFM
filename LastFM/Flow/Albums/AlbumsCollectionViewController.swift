@@ -10,6 +10,8 @@ import UIKit
 
 class AlbumsCollectionViewController: UICollectionViewController {
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     var artist: Artist!
     private var albums: [Album] = []
     private var imageLoader = ImageCacheLoader()
@@ -36,6 +38,7 @@ class AlbumsCollectionViewController: UICollectionViewController {
         isLoading = true
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        activityIndicator.startAnimating()
         LastfmAPIClient.getTopAlbums(artistName: artist.name ?? "", page: currentPage) { [weak self] (result) in
             switch result {
             case .success(let albums):
@@ -49,6 +52,7 @@ class AlbumsCollectionViewController: UICollectionViewController {
                 print(error.localizedDescription)
             }
             DispatchQueue.main.async {
+                self?.activityIndicator.stopAnimating()
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
             }
         }

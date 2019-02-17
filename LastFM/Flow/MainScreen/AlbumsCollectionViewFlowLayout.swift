@@ -19,7 +19,7 @@ class AlbumsColletionViewFlowLayout: UICollectionViewFlowLayout {
         let paddingSpace = sectionInset.left * CGFloat(itemsPerRow + 1)
         let availableWidth = frame.width - paddingSpace
         let widthPerItem = availableWidth / CGFloat(itemsPerRow)
-        let heightPerItem = widthPerItem * 1.15
+        let heightPerItem = widthPerItem * 1.2
         
         self.itemSize = CGSize(width: widthPerItem, height: heightPerItem)
     }

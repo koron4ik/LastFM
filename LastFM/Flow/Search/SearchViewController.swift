@@ -11,6 +11,7 @@ import UIKit
 class SearchViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     private lazy var searchController: UISearchController = {
         let controller = UISearchController(searchResultsController: nil)
@@ -44,7 +45,6 @@ class SearchViewController: UIViewController {
         
         self.definesPresentationContext = true
         tableView.tableHeaderView = searchController.searchBar
-        tableView.tableFooterView = UIView(frame: .zero)
         tableView.backgroundView = backgroundView
     }
     
@@ -69,6 +69,7 @@ class SearchViewController: UIViewController {
         isLoading = true
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        activityIndicator.startAnimating()
         LastfmAPIClient.getArtists(with: searchText, page: currentPage) { [weak self] result in
             switch result {
             case .success(let artists):
@@ -85,8 +86,10 @@ class SearchViewController: UIViewController {
                 }
             case .failure(let error):
                 print(error.localizedDescription)
+                self?.tableView.backgroundView = UIImageView(image: UIImage(named: "not_found"))
             }
             DispatchQueue.main.async {
+                self?.activityIndicator.stopAnimating()
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
             }
         }

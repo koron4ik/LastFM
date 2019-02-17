@@ -14,7 +14,7 @@ class AlbumsCollectionViewController: UICollectionViewController {
     private var albums: [Album] = []
     private var imageLoader = ImageCacheLoader()
     private let reuseIdentifier = "AlbumCell"
-    private var currentPage = 1
+    private var currentPage = 0
     private let numberOfPages = 3
     private var isLoading = false
     
@@ -22,15 +22,13 @@ class AlbumsCollectionViewController: UICollectionViewController {
         super.viewDidLoad()
         
         self.collectionView.collectionViewLayout = AlbumsColletionViewFlowLayout(frame: view.frame, itemsPerRow: 2)
+        self.loadAlbums()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        currentPage = 0
-        albums.removeAll()
         collectionView.reloadData()
-        loadAlbums()
     }
     
     private func loadAlbums() {
@@ -107,7 +105,9 @@ extension AlbumsCollectionViewController {
             cell.isFavourite = true
         }
         
-        if album.image == nil, let url = album.images?.large {
+        if let data = album.imageData {
+            cell.albumImageView.image = UIImage(data: data)
+        } else if let url = album.image?.large {
             cell.activityIndicator.startAnimating()
             imageLoader.obtainImageWithPath(imagePath: url.absoluteString) { (image, _) in
                 if let cell = collectionView.cellForItem(at: indexPath) as? AlbumCell {
@@ -117,8 +117,6 @@ extension AlbumsCollectionViewController {
                 }
                 album.addImage(image)
             }
-        } else if let image = album.image {
-            cell.albumImageView.image = image
         }
         
         return cell

@@ -80,15 +80,15 @@ extension CoreDataManager {
         let albumCoreData = AlbumCoreData(entity: entityForName("AlbumCoreData"),
                                           insertInto: managedObjectContext)
         albumCoreData.name = album.name
-        albumCoreData.image = album.image?.pngData()
+        albumCoreData.image = album.imageData
         
         let albumImagesCoreData = ImagesCoreData(entity: entityForName("ImagesCoreData"),
                                                  insertInto: managedObjectContext)
-        albumImagesCoreData.small = album.images?.small?.absoluteString
-        albumImagesCoreData.medium = album.images?.medium?.absoluteString
-        albumImagesCoreData.large = album.images?.large?.absoluteString
-        albumImagesCoreData.extralarge = album.images?.extralarge?.absoluteString
-        albumImagesCoreData.mega = album.images?.mega?.absoluteString
+        albumImagesCoreData.small = album.image?.small?.absoluteString
+        albumImagesCoreData.medium = album.image?.medium?.absoluteString
+        albumImagesCoreData.large = album.image?.large?.absoluteString
+        albumImagesCoreData.extralarge = album.image?.extralarge?.absoluteString
+        albumImagesCoreData.mega = album.image?.mega?.absoluteString
         albumCoreData.images = albumImagesCoreData
         
         let artistCoreData = ArtistCoreData(entity: entityForName("ArtistCoreData"),
@@ -98,11 +98,11 @@ extension CoreDataManager {
     
         let artistImagesCoreData = ImagesCoreData(entity: entityForName("ImagesCoreData"),
                                                   insertInto: managedObjectContext)
-        artistImagesCoreData.small = album.images?.small?.absoluteString
-        artistImagesCoreData.medium = album.images?.medium?.absoluteString
-        artistImagesCoreData.large = album.images?.large?.absoluteString
-        artistImagesCoreData.extralarge = album.images?.extralarge?.absoluteString
-        artistImagesCoreData.mega = album.images?.mega?.absoluteString
+        artistImagesCoreData.small = album.image?.small?.absoluteString
+        artistImagesCoreData.medium = album.image?.medium?.absoluteString
+        artistImagesCoreData.large = album.image?.large?.absoluteString
+        artistImagesCoreData.extralarge = album.image?.extralarge?.absoluteString
+        artistImagesCoreData.mega = album.image?.mega?.absoluteString
         artistCoreData.images = artistImagesCoreData
         albumCoreData.artist = artistCoreData
         
@@ -112,7 +112,6 @@ extension CoreDataManager {
                                           insertInto: managedObjectContext)
                 
                 trackCoreData.name = track.name
-                trackCoreData.duration = Int16(track.duration ?? 0)
                 albumCoreData.addToTracks(trackCoreData)
             }
         }

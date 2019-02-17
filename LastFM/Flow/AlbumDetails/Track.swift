@@ -37,23 +37,9 @@ class TracksRoot: Decodable {
 class Track: Decodable {
     
     var name: String?
-    var duration: Int?
-    
-    enum CodingKeys: String, CodingKey {
-        case name
-        case duration
-    }
     
     init?(trackCoreData: TrackCoreData) {
         self.name = trackCoreData.name
-        self.duration = Int(trackCoreData.duration)
-    }
-    
-    required init(from decoder: Decoder) throws {        
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        self.name = try container.decode(String.self, forKey: .name)
-        self.duration = Int(try container.decode(String.self, forKey: .duration))
     }
     
 }

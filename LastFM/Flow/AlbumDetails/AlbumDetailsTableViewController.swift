@@ -16,15 +16,15 @@ class AlbumDetailsTableViewController: UITableViewController {
     @IBOutlet weak var albumImageView: UIImageView!
     @IBOutlet weak var albumNameLabel: UILabel!
     @IBOutlet weak var artistNameLabel: UILabel!
-    @IBOutlet weak var favouriteButton: UIButton!
-
+    @IBOutlet weak var favouriteButton: UIBarButtonItem!
+    
     var album: Album!
     private var imageLoader = ImageCacheLoader()
 
     private var isFavourite = false {
         didSet {
             let image = isFavourite ? UIImage(named: "favorite") : UIImage(named: "unfavorite")
-            favouriteButton.setImage(image, for: .normal)
+            favouriteButton.image = image
         }
     }
 
@@ -51,9 +51,9 @@ class AlbumDetailsTableViewController: UITableViewController {
         
         isFavourite = CoreDataManager.shared.albumIsExist(album)
         
-        if let image = album.image {
-            self.albumImageView.image = image
-        } else if let url = album.images?.extralarge {
+        if let data = album.imageData {
+            self.albumImageView.image = UIImage(data: data)
+        } else if let url = album.image?.extralarge {
             self.imageActivityIndicator.startAnimating()
             imageLoader.obtainImageWithPath(imagePath: url.absoluteString) { [weak self] (image, _) in
                 self?.imageActivityIndicator.stopAnimating()

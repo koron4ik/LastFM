@@ -59,7 +59,7 @@
                                                 <action selector="favouriteAlbumButtonPressed:" destination="9mo-1l-9wa" eventType="touchUpInside" id="N0Q-8b-u53"/>
                                             </connections>
                                         </button>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FM3-fO-s28">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FM3-fO-s28">
                                             <rect key="frame" x="2" y="178" width="146" height="16"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="16" id="iEH-OR-gxA"/>

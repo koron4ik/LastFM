@@ -43,28 +43,14 @@ class Artist: Decodable {
     
     var name: String?
     var url: String?
-    var images: Images?
-
-    enum CodingKeys: String, CodingKey {
-        case name
-        case url
-        case images = "image"
-    }
+    var image: Images?
     
     init?(artistCoreData: ArtistCoreData) {
         self.name = artistCoreData.name
         self.url = artistCoreData.url
         
         if let images = artistCoreData.images {
-            self.images = Images(imageCoreData: images)
+            self.image = Images(imageCoreData: images)
         }
-    }
-
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-
-        self.name = try container.decode(String.self, forKey: .name)
-        self.url = try container.decode(String.self, forKey: .url)
-        self.images = try container.decodeIfPresent(Images.self, forKey: .images)
     }
 }

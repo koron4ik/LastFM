@@ -11,7 +11,16 @@ import UIKit
 class SearchViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var searchBar: UISearchBar!
+    
+    private lazy var searchController: UISearchController = {
+        let controller = UISearchController(searchResultsController: nil)
+        controller.obscuresBackgroundDuringPresentation = false
+        controller.dimsBackgroundDuringPresentation = false
+        controller.searchBar.placeholder = "Search artists"
+        controller.searchBar.delegate = self
+        
+        return controller
+    }()
     
     private var backgroundView: UIImageView {
         let background = UIImageView()
@@ -25,7 +34,7 @@ class SearchViewController: UIViewController {
     private var artists: [Artist] = []
     private var cellId = "ArtistCell"
     private var imageLoader = ImageCacheLoader()
-    private var currentPage = 1
+    private var currentPage = 0
     private let numberOfPages = 3
     private var isLoading = false
     private var searchText: String!
@@ -33,9 +42,10 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.definesPresentationContext = true
+        tableView.tableHeaderView = searchController.searchBar
         tableView.tableFooterView = UIView(frame: .zero)
         tableView.backgroundView = backgroundView
-        searchBar.barTintColor = UIColor(displayP3Red: 222/255, green: 222/255, blue: 222/255, alpha: 1.0)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -51,8 +61,6 @@ class SearchViewController: UIViewController {
         
         searchText = text
         currentPage = 0
-        artists.removeAll()
-        tableView.reloadData()
         loadArtists()
     }
         
@@ -71,6 +79,8 @@ class SearchViewController: UIViewController {
                     self?.isLoading = false
                     if self?.artists.count != 0 {
                         self?.tableView.backgroundView = UIImageView()
+                    } else {
+                        self?.tableView.backgroundView = UIImageView(image: UIImage(named: "not_found"))
                     }
                 }
             case .failure(let error):
@@ -85,7 +95,7 @@ class SearchViewController: UIViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         
-        searchBar.resignFirstResponder()
+        searchController.searchBar.resignFirstResponder()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -106,6 +116,10 @@ class SearchViewController: UIViewController {
 extension SearchViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        artists.removeAll()
+        tableView.reloadData()
+        tableView.backgroundView = backgroundView
+        
         if textTimer != nil {
             textTimer?.invalidate()
             textTimer = nil
@@ -119,6 +133,10 @@ extension SearchViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        tableView.backgroundView = backgroundView
     }
 }
 
@@ -155,7 +173,7 @@ extension SearchViewController: UITableViewDataSource {
         cell.imageView?.image = UIImage(named: "placeholder")?.resizedImage(newSize: CGSize(width: 45,
                                                                                             height: 45))
         
-        imageLoader.obtainImageWithPath(imagePath: artist.images?.medium?.absoluteString ?? "") { (image, _) in
+        imageLoader.obtainImageWithPath(imagePath: artist.image?.medium?.absoluteString ?? "") { (image, _) in
             if let cell = tableView.cellForRow(at: indexPath) {
                 cell.imageView?.image = image
             }

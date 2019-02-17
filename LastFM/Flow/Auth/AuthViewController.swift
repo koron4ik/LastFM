@@ -15,9 +15,27 @@ class AuthViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    private var isSecure = false {
+        didSet {
+            let image = isSecure ? UIImage(named: "eye_open") : UIImage(named: "eye_closed")
+            eyePasswordButton.setImage(image, for: .normal)
+            passwordTextField.isSecureTextEntry = isSecure
+        }
+    }
+    
+    private lazy var eyePasswordButton: UIButton = {
+        var button = UIButton(frame: CGRect(x: 0, y: 5, width: 20, height: 20))
+        button.addTarget(self, action: #selector(eyeImagePressed), for: .touchUpInside)
+        passwordTextField.setRightButtonView(button)
+        
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        isSecure = true
+        
         activityIndicator.startAnimating()
         view.isUserInteractionEnabled = false
         DispatchQueue.main.async {
@@ -35,6 +53,10 @@ class AuthViewController: UIViewController {
                 }
             })
         }
+    }
+    
+    @objc func eyeImagePressed() {
+        isSecure = !isSecure
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -91,6 +113,11 @@ extension AuthViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        
+        if textField == loginTextField {
+            passwordTextField.becomeFirstResponder()
+        }
+        
         return true
     }
 }

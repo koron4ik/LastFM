@@ -7,19 +7,19 @@
 //
 
 import UIKit
-import WebKit
 
 class AuthViewController: UIViewController {
     
     @IBOutlet weak var loginTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var scrollView: UIScrollView!
     
-    private var isSecure = false {
+    private var passwordIsSecure = false {
         didSet {
-            let image = isSecure ? UIImage(named: "eye_open") : UIImage(named: "eye_closed")
+            let image = passwordIsSecure ? UIImage(named: "eye_open") : UIImage(named: "eye_closed")
             eyePasswordButton.setImage(image, for: .normal)
-            passwordTextField.isSecureTextEntry = isSecure
+            passwordTextField.isSecureTextEntry = passwordIsSecure
         }
     }
     
@@ -33,9 +33,16 @@ class AuthViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        isSecure = true
         
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(keyboardShouldHide))
+        view.addGestureRecognizer(tapGesture)
+        
+        loginIfUserAuthorized()
+        registerNotificationObservers()
+        passwordIsSecure = true
+    }
+    
+    private func loginIfUserAuthorized() {
         activityIndicator.startAnimating()
         view.isUserInteractionEnabled = false
         DispatchQueue.main.async {
@@ -54,10 +61,6 @@ class AuthViewController: UIViewController {
             })
         }
     }
-    
-    @objc func eyeImagePressed() {
-        isSecure = !isSecure
-    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -70,6 +73,31 @@ class AuthViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.isNavigationBarHidden = false
+    }
+    
+    private func registerNotificationObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    private func showAlert() {
+        let alertController = UIAlertController(title: "Error", message:
+            "Login or password is incorrect. Try again.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: .default))
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+}
+
+// MARK: Actions
+extension AuthViewController {
+    
+    @objc func eyeImagePressed() {
+        passwordIsSecure = !passwordIsSecure
     }
     
     @IBAction func loginButtonPressed(_ sender: Any) {
@@ -95,18 +123,19 @@ class AuthViewController: UIViewController {
         }
     }
     
-    private func showAlert() {
-        let alertController = UIAlertController(title: "Error", message:
-            "Login or password is incorrect. Try again.", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Ok", style: .default))
-        
-        self.present(alertController, animated: true, completion: nil)
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
+    @objc func keyboardShouldHide() {
         self.view.endEditing(true)
     }
+    
+    @objc func keyboardWillShow(_ notification: Notification) {
+        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue else { return }
+        scrollView.contentInset.bottom = view.convert(keyboardSize, from: nil).size.height / 2
+    }
+    
+    @objc func keyboardWillHide(_ notification: Notification) {
+        scrollView.contentInset.bottom = 0
+    }
+    
 }
 
 extension AuthViewController: UITextFieldDelegate {

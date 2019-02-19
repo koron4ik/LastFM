@@ -65,28 +65,28 @@ class AlbumDetailsTableViewController: UITableViewController {
     }
     
     private func configureTableView() {
-        if album.tracks?.count ?? 0 != 0 {
-            self.tableView.reloadData()
-        } else {
-            UIApplication.shared.isNetworkActivityIndicatorVisible = true
-            tableViewActivityIndicator.startAnimating()
-            LastfmAPIClient.getTracks(albumName: album.name ?? "", artistName: album.artist?.name ?? "") { [weak self] (result) in
-                switch result {
-                case .success(let tracks):
-                    if let tracks = tracks {
-                        DispatchQueue.main.async {
-                            self?.album.addTracks(tracks)
-                            self?.tableView.reloadData()
-                        }
+        album.tracks?.count ?? 0 != 0 ? tableView.reloadData() : fetchTracks()
+    }
+    
+    private func fetchTracks() {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        tableViewActivityIndicator.startAnimating()
+        LastfmAPIClient.getTracks(albumName: album.name ?? "", artistName: album.artist?.name ?? "") { [weak self] (result) in
+            switch result {
+            case .success(let tracks):
+                if let tracks = tracks {
+                    DispatchQueue.main.async {
+                        self?.album.addTracks(tracks)
+                        self?.tableView.reloadData()
                     }
-                    
-                case .failure(let error):
-                    print(error.localizedDescription)
                 }
-                DispatchQueue.main.async {
-                    self?.tableViewActivityIndicator.stopAnimating()
-                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                }
+                
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+            DispatchQueue.main.async {
+                self?.tableViewActivityIndicator.stopAnimating()
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
             }
         }
     }
@@ -104,10 +104,6 @@ class AlbumDetailsTableViewController: UITableViewController {
 
 // MARK: UITableViewDataSource
 extension AlbumDetailsTableViewController {
-    
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return album.tracks?.count ?? 0

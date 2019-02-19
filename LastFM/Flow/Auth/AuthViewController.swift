@@ -45,21 +45,15 @@ class AuthViewController: UIViewController {
     private func loginIfUserAuthorized() {
         activityIndicator.startAnimating()
         view.isUserInteractionEnabled = false
-        DispatchQueue.main.async {
-            LastfmAuth.auth.userIsExist(completion: { [weak self] (session) in
+        LastfmAuth.auth.userIsExist(completion: { [weak self] (session) in
+            DispatchQueue.main.async {
+                self?.activityIndicator.stopAnimating()
+                self?.view.isUserInteractionEnabled = true
                 if session != nil {
-                    DispatchQueue.main.async {
-                        self?.activityIndicator.stopAnimating()
-                        self?.view.isUserInteractionEnabled = true
-                        self?.performSegue(withIdentifier: "mainScreen", sender: self)
-                    }
+                    self?.performSegue(withIdentifier: "mainScreen", sender: self)
                 }
-                DispatchQueue.main.async {
-                    self?.activityIndicator.stopAnimating()
-                    self?.view.isUserInteractionEnabled = true
-                }
-            })
-        }
+            }
+        })
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -107,18 +101,10 @@ extension AuthViewController {
         activityIndicator.startAnimating()
         view.isUserInteractionEnabled = false
         LastfmAuth.auth.login(withUsername: username, password: password) { [weak self] (session, _) in
-            if session != nil {
-                DispatchQueue.main.async {
-                    self?.view.isUserInteractionEnabled = true
-                    self?.activityIndicator.stopAnimating()
-                    self?.performSegue(withIdentifier: "mainScreen", sender: self)
-                }
-            } else {
-                DispatchQueue.main.async {
-                    self?.view.isUserInteractionEnabled = true
-                    self?.activityIndicator.stopAnimating()
-                    self?.showAlert()
-                }
+            DispatchQueue.main.async {
+                self?.view.isUserInteractionEnabled = true
+                self?.activityIndicator.stopAnimating()
+                session != nil ? self?.performSegue(withIdentifier: "mainScreen", sender: self) : self?.showAlert()
             }
         }
     }

@@ -8,34 +8,24 @@
 
 import Foundation
 
-extension Decodable {
-    var model: [Decodable] { return [] }
-}
-
 class ArtistsRoot: Decodable {
     
-    enum ResultCodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case results
-    }
-    
-    enum ArtistmatchesCodingKeys: String, CodingKey {
         case artistmatches
-    }
-    
-    enum ArtistCodingKeys: String, CodingKey {
         case artists = "artist"
     }
     
     let artists: [Artist]
     
     required init(from decoder: Decoder) throws {
-        let result = try decoder.container(keyedBy: ResultCodingKeys.self)
-        let artistmatches = try result.nestedContainer(keyedBy: ArtistmatchesCodingKeys.self,
+        let result = try decoder.container(keyedBy: CodingKeys.self)
+        let artistmatches = try result.nestedContainer(keyedBy: CodingKeys.self,
                                                        forKey: .results)
-        let artist = try artistmatches.nestedContainer(keyedBy: ArtistCodingKeys.self,
+        let artists = try artistmatches.nestedContainer(keyedBy: CodingKeys.self,
                                                        forKey: .artistmatches)
         
-        self.artists = try artist.decode([Artist].self, forKey: .artists)
+        self.artists = try artists.decode([Artist].self, forKey: .artists)
     }
 }
 

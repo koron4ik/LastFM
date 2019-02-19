@@ -119,6 +119,7 @@
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Albums" id="Il4-jL-a86">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="yFr-G3-7iT"/>
                         <rightBarButtonItems>
                             <barButtonItem systemItem="search" id="VD4-nN-4gO">
                                 <connections>

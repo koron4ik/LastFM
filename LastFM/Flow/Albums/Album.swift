@@ -10,19 +10,16 @@ import UIKit
 
 class AlbumsRoot: Decodable {
     
-    enum ResultCodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case topalbums
-    }
-    
-    enum AlbumsCodingKeys: String, CodingKey {
         case albums = "album"
     }
     
     let albums: [Album]
     
     required init(from decoder: Decoder) throws {
-        let topalbums = try decoder.container(keyedBy: ResultCodingKeys.self)
-        let album = try topalbums.nestedContainer(keyedBy: AlbumsCodingKeys.self, forKey: .topalbums)
+        let topalbums = try decoder.container(keyedBy: CodingKeys.self)
+        let album = try topalbums.nestedContainer(keyedBy: CodingKeys.self, forKey: .topalbums)
         
         self.albums = try album.decode([Album].self, forKey: .albums)
     }

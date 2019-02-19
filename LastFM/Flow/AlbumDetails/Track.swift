@@ -10,25 +10,19 @@ import Foundation
 
 class TracksRoot: Decodable {
     
-    enum AlbumCodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case album
-    }
-    
-    enum TracksCodingKeys: String, CodingKey {
         case tracks
-    }
-    
-    enum TrackCodingKeys: String, CodingKey {
         case track
     }
     
     let tracks: [Track]
     
     required init(from decoder: Decoder) throws {
-        let album = try decoder.container(keyedBy: AlbumCodingKeys.self)
-        let tracks = try album.nestedContainer(keyedBy: TracksCodingKeys.self,
+        let album = try decoder.container(keyedBy: CodingKeys.self)
+        let tracks = try album.nestedContainer(keyedBy: CodingKeys.self,
                                                        forKey: .album)
-        let track = try tracks.nestedContainer(keyedBy: TrackCodingKeys.self, forKey: .tracks)
+        let track = try tracks.nestedContainer(keyedBy: CodingKeys.self, forKey: .tracks)
         
         self.tracks = try track.decode([Track].self, forKey: .track)
     }

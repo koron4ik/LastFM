@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18C54" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18D109" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AlbumCoreData" representedClassName="AlbumCoreData" syncable="YES" codeGenerationType="class">
         <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -28,7 +28,7 @@
     </entity>
     <elements>
         <element name="AlbumCoreData" positionX="-188.796875" positionY="-147.98046875" width="128" height="120"/>
-        <element name="ArtistCoreData" positionX="-407.6328125" positionY="29.67578125" width="128" height="103"/>
+        <element name="ArtistCoreData" positionX="-407.6328125" positionY="29.67578125" width="128" height="105"/>
         <element name="ImagesCoreData" positionX="-165.44921875" positionY="67.2109375" width="128" height="148"/>
         <element name="TrackCoreData" positionX="55.50390625" positionY="-65.2578125" width="128" height="75"/>
     </elements>
